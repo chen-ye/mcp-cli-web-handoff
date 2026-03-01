@@ -1,0 +1,23 @@
+{
+  "name": "mcp-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "ws": "^8.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.9.3"
+  }
+}
