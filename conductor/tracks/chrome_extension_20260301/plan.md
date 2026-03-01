@@ -19,7 +19,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: WebSocket and Background Communication' (Protocol in workflow.md)
 
 ## Phase 3: Side Panel UI Implementation
-- [ ] Task: Create Side Panel HTML and CSS
+- [~] Task: Create Side Panel HTML and CSS
     - [ ] Create `sidepanel.html` and `sidepanel.css`
     - [ ] Define basic layout for buttons and status indicators
 - [ ] Task: Implement Side Panel JavaScript logic
