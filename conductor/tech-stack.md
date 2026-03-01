@@ -10,7 +10,7 @@
 - **WebSocket (`ws` library):** A lightweight library for implementing the local WebSocket server within the Node.js MCP server and for managing communication with the browser extension.
 
 ## Architecture
-- **Local MCP Server (Node.js):** A server that exposes specific tools (e.g., `delegate_web_research`) to the Gemini CLI. It hosts a local WebSocket server and manages secure, token-based authentication.
+- **Local MCP Server & WebSocket Daemon (Node.js):** A server that exposes specific tools (e.g., `delegate_web_research`) to the Gemini CLI. It automatically spawns a standalone canonical WebSocket daemon to manage secure, token-based authentication and message routing between multiple CLI instances and the browser extension.
 - **Chrome Extension Background Service Worker (Browser):** A Manifest V3 background process that runs in the browser, connecting to the local WebSocket server and maintaining the connection via a "keep-alive" mechanism.
 - **Chrome Side Panel UI:** A dedicated interface for user interactions (copy/paste), interacting with the background worker to move content between the CLI and the web interface.
 

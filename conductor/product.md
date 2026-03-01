@@ -18,7 +18,7 @@ The Gemini-to-Web Handoff project aims to provide a seamless and secure bridge b
 5. **Bidirectional Communication:** Facilitate a smooth flow of information from the CLI to the web for research and back to the CLI for final integration.
 
 ## Key Features
-- **Local MCP Server:** A Node.js-based server that acts as the CLI-side bridge, hosting the WebSocket server and generating auth tokens.
+- **Local MCP Server:** A Node.js-based server that acts as the CLI-side bridge, which spawns or connects to a canonical WebSocket daemon to manage secure, token-based authentication and routing between multiple CLI instances.
 - **Chrome Extension (Manifest V3):** A background service worker to maintain the WebSocket connection and a Side Panel for user interactions.
 - **Side Panel Interface:** A dedicated UI providing "Copy Prompt" and "Copy Context" buttons (CLI-to-Web), along with a "Paste Web Response" input field (Web-to-CLI) to return content to the CLI agent.
 - **Manual Clipboard Integration:** Uses the navigator.clipboard API for moving structured prompts and context into the user's clipboard for easy pasting into Gemini.
