@@ -31,6 +31,8 @@ function connect() {
 
     socket.onopen = () => {
       console.log("WebSocket connected to daemon.");
+      chrome.storage.local.set({ connected: true });
+      chrome.runtime.sendMessage({ type: "connectionStatus", connected: true });
       startKeepAlive();
     };
 
@@ -55,11 +57,25 @@ function connect() {
 
     socket.onclose = () => {
       console.log("WebSocket disconnected. Retrying in 5 seconds...");
+      chrome.storage.local.set({ connected: false });
+      chrome.runtime.sendMessage({ type: "connectionStatus", connected: false });
       stopKeepAlive();
       setTimeout(connect, 5000);
     };
   });
 }
+
+// Handle messages from side panel
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "webResponse") {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: "response", data: message.data }));
+      sendResponse({ success: true });
+    } else {
+      sendResponse({ success: false, error: "WebSocket not connected" });
+    }
+  }
+});
 
 // Initial connection attempt
 connect();
