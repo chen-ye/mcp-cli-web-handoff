@@ -1,6 +1,6 @@
 # Implementation Plan: Implement Phase 1: Gemini CLI Extension & MCP Server Configuration
 
-## Phase 1: Core MCP Server and WebSocket Foundation
+## Phase 1: Core MCP Server and WebSocket Foundation [checkpoint: af79c21]
 - [x] b8e5361 Task: Initialize Node.js project for the MCP server
     - [x] Create `package.json` with required dependencies (@google/mcp-server-sdk, ws)
     - [x] Configure TypeScript and basic build scripts
@@ -13,4 +13,4 @@
 - [x] 00c9449 Task: Implement CLI suspension and prompt formulation
     - [x] Formulate the highly structured research prompt for the browser extension
     - [x] Return the correct suspension message to the CLI agent
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Core MCP Server and WebSocket Foundation' (Protocol in workflow.md)
+- [x] af79c21 Task: Conductor - User Manual Verification 'Phase 1: Core MCP Server and WebSocket Foundation' (Protocol in workflow.md)
