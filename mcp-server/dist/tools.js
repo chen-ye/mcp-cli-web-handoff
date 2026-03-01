@@ -12,6 +12,8 @@ async function handleDelegateWebResearch(args) {
     (0, websocket_1.startWebSocketServer)();
     // Generate a new secure, one-time token for this request
     const token = (0, websocket_1.generateToken)();
+    // Store the prompt so it can be sent to the browser extension upon connection
+    (0, websocket_1.setPendingPrompt)(args.prompt);
     // We will return a specific message to the CLI agent that instructs it to pause execution
     // while the local WebSocket Server waits for a response from the browser extension.
     return {

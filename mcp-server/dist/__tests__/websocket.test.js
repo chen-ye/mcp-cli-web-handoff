@@ -38,11 +38,23 @@ describe("WebSocket Server", () => {
         (0, websocket_1.startWebSocketServer)(port);
         const ws = new ws_1.WebSocket(`ws://localhost:${port}?token=invalid`);
         ws.on("error", (err) => {
-            // ws package might emit error on unexpected response
             done();
         });
         ws.on("unexpected-response", (req, res) => {
             expect(res.statusCode).toBe(401);
+            done();
+        });
+    });
+    it("should receive pending prompt upon connection", (done) => {
+        const token = (0, websocket_1.generateToken)();
+        (0, websocket_1.setPendingPrompt)("Test research prompt");
+        (0, websocket_1.startWebSocketServer)(port);
+        const ws = new ws_1.WebSocket(`ws://localhost:${port}?token=${token}`);
+        ws.on("message", (data) => {
+            const parsed = JSON.parse(data.toString());
+            expect(parsed.type).toBe("prompt");
+            expect(parsed.data).toBe("Test research prompt");
+            ws.close();
             done();
         });
     });

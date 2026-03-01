@@ -1,5 +1,5 @@
 import { WebSocketServer, WebSocket } from "ws";
-import { startWebSocketServer, generateToken, verifyToken, stopWebSocketServer } from "../websocket";
+import { startWebSocketServer, generateToken, verifyToken, stopWebSocketServer, setPendingPrompt } from "../websocket";
 import * as http from "http";
 
 describe("WebSocket Server", () => {
@@ -45,11 +45,25 @@ describe("WebSocket Server", () => {
     
     const ws = new WebSocket(`ws://localhost:${port}?token=invalid`);
     ws.on("error", (err) => {
-      // ws package might emit error on unexpected response
       done();
     });
     ws.on("unexpected-response", (req, res) => {
       expect(res.statusCode).toBe(401);
+      done();
+    });
+  });
+
+  it("should receive pending prompt upon connection", (done) => {
+    const token = generateToken();
+    setPendingPrompt("Test research prompt");
+    startWebSocketServer(port);
+    
+    const ws = new WebSocket(`ws://localhost:${port}?token=${token}`);
+    ws.on("message", (data) => {
+      const parsed = JSON.parse(data.toString());
+      expect(parsed.type).toBe("prompt");
+      expect(parsed.data).toBe("Test research prompt");
+      ws.close();
       done();
     });
   });

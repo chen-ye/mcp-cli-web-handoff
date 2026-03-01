@@ -6,10 +6,15 @@ import { URL } from "url";
 let wss: WebSocketServer | null = null;
 let server: http.Server | null = null;
 let currentToken: string | null = null;
+let pendingPrompt: string | null = null;
 
 export function generateToken(): string {
   currentToken = crypto.randomBytes(32).toString("hex");
   return currentToken;
+}
+
+export function setPendingPrompt(prompt: string): void {
+  pendingPrompt = prompt;
 }
 
 export function verifyToken(token: string): boolean {
@@ -51,6 +56,13 @@ export function startWebSocketServer(port: number = 8080): void {
 
   wss.on("connection", (ws: WebSocket) => {
     console.log("Browser extension connected securely via WebSocket.");
+    
+    // Send pending prompt if it exists
+    if (pendingPrompt) {
+      ws.send(JSON.stringify({ type: "prompt", data: pendingPrompt }));
+      pendingPrompt = null; // Clear after sending
+    }
+
     ws.on("message", (message: string) => {
       // Logic for handling messages from the browser extension
       console.log("Received from browser:", message.toString());

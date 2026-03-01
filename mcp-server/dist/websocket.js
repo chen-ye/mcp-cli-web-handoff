@@ -34,6 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateToken = generateToken;
+exports.setPendingPrompt = setPendingPrompt;
 exports.verifyToken = verifyToken;
 exports.startWebSocketServer = startWebSocketServer;
 exports.stopWebSocketServer = stopWebSocketServer;
@@ -44,9 +45,13 @@ const url_1 = require("url");
 let wss = null;
 let server = null;
 let currentToken = null;
+let pendingPrompt = null;
 function generateToken() {
     currentToken = crypto.randomBytes(32).toString("hex");
     return currentToken;
+}
+function setPendingPrompt(prompt) {
+    pendingPrompt = prompt;
 }
 function verifyToken(token) {
     return currentToken !== null && token === currentToken;
@@ -81,6 +86,11 @@ function startWebSocketServer(port = 8080) {
     });
     wss.on("connection", (ws) => {
         console.log("Browser extension connected securely via WebSocket.");
+        // Send pending prompt if it exists
+        if (pendingPrompt) {
+            ws.send(JSON.stringify({ type: "prompt", data: pendingPrompt }));
+            pendingPrompt = null; // Clear after sending
+        }
         ws.on("message", (message) => {
             // Logic for handling messages from the browser extension
             console.log("Received from browser:", message.toString());
