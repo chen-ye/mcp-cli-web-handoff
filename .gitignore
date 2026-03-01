@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-package-lock.json
+# package-lock.json (removed from ignore list to allow root commit)
 
 # Build outputs
 dist/
