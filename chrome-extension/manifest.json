@@ -21,5 +21,12 @@
   },
   "action": {
     "default_title": "Open Gemini Web Handoff"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

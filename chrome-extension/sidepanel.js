@@ -44,6 +44,12 @@ chrome.runtime.onMessage.addListener((message) => {
     updatePromptUI(message.data);
   } else if (message.type === 'connectionStatus') {
     updateConnectionStatus(message.connected);
+  } else if (message.type === 'geminiStatus') {
+    if (message.ready) {
+      statusText.textContent = 'Connected (Gemini Ready)';
+    } else if (statusText.textContent.includes('Connected')) {
+      statusText.textContent = 'Connected';
+    }
   }
 });
 
