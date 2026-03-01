@@ -10,7 +10,7 @@
 - [x] 2032e43 Task: Implement the WebSocket server and token generation
     - [x] Develop a secure, one-time token generation mechanism
     - [x] Integrate the WebSocket server into the MCP tool invocation logic
-- [~] Task: Implement CLI suspension and prompt formulation
-    - [ ] Formulate the highly structured research prompt for the browser extension
-    - [ ] Return the correct suspension message to the CLI agent
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Core MCP Server and WebSocket Foundation' (Protocol in workflow.md)
+- [x] 00c9449 Task: Implement CLI suspension and prompt formulation
+    - [x] Formulate the highly structured research prompt for the browser extension
+    - [x] Return the correct suspension message to the CLI agent
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Core MCP Server and WebSocket Foundation' (Protocol in workflow.md)
