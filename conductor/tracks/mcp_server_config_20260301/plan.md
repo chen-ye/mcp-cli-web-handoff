@@ -4,10 +4,10 @@
 - [x] b8e5361 Task: Initialize Node.js project for the MCP server
     - [x] Create `package.json` with required dependencies (@google/mcp-server-sdk, ws)
     - [x] Configure TypeScript and basic build scripts
-- [~] Task: Implement the `delegate_web_research` tool
-    - [ ] Define the tool's input schema (e.g., research prompt)
-    - [ ] Implement the core tool logic in the MCP server
-- [ ] Task: Implement the WebSocket server and token generation
+- [x] d4e5175 Task: Implement the `delegate_web_research` tool
+    - [x] Define the tool's input schema (e.g., research prompt)
+    - [x] Implement the core tool logic in the MCP server
+- [~] Task: Implement the WebSocket server and token generation
     - [ ] Develop a secure, one-time token generation mechanism
     - [ ] Integrate the WebSocket server into the MCP tool invocation logic
 - [ ] Task: Implement CLI suspension and prompt formulation
