@@ -1,0 +1,20 @@
+# Tech Stack: mcp-gemini-cli-web-handoff
+
+## Programming Language
+- **Node.js (TypeScript):** The language for building the MCP server and its associated tools.
+- **Browser-based JavaScript (TypeScript):** The language for building the Chrome Extension, including the background service worker and the Side Panel UI.
+
+## Frameworks & Libraries
+- **Chrome Extension (Manifest V3):** The standard framework for building browser extensions, providing a secure and performant way to interact with the web interface.
+- **Model Context Protocol (MCP) Server SDK:** The official SDK for building MCP servers, allowing for seamless integration with the Gemini CLI.
+- **WebSocket (`ws` library):** A lightweight library for implementing the local WebSocket server within the Node.js MCP server and for managing communication with the browser extension.
+
+## Architecture
+- **Local MCP Server (Node.js):** A server that exposes specific tools (e.g., `delegate_web_research`) to the Gemini CLI. It hosts a local WebSocket server and manages secure, token-based authentication.
+- **Chrome Extension Background Service Worker (Browser):** A Manifest V3 background process that runs in the browser, connecting to the local WebSocket server and maintaining the connection via a "keep-alive" mechanism.
+- **Chrome Side Panel UI:** A dedicated interface for user interactions (copy/paste), interacting with the background worker to move content between the CLI and the web interface.
+
+## Development & Tooling
+- **npm / yarn:** Package managers for managing project dependencies.
+- **Git:** Version control for tracking project changes and collaborating with other developers.
+- **ESLint / Prettier:** Linting and formatting tools to maintain code quality and consistency.
