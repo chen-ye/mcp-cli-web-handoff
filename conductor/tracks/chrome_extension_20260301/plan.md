@@ -5,8 +5,8 @@
     - [x] Create `chrome-extension` directory
     - [ ] Create `manifest.json` with basic metadata and permissions
 - [ ] Task: Implement basic background service worker
-    - [ ] Create `background.ts` (or `background.js`)
-    - [ ] Register the service worker in `manifest.json`
+    - [x] Create `background.ts` (or `background.js`)
+    - [x] Register the service worker in `manifest.json`
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Extension Scaffolding and Basic Manifest' (Protocol in workflow.md)
 
 ## Phase 2: WebSocket and Background Communication
