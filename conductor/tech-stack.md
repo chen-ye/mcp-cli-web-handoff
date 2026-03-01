@@ -15,6 +15,7 @@
 - **Chrome Side Panel UI:** A dedicated interface for user interactions (copy/paste), interacting with the background worker to move content between the CLI and the web interface.
 
 ## Development & Tooling
-- **npm / yarn:** Package managers for managing project dependencies.
+- **npm Workspaces:** Unified project management using npm workspaces to manage dependencies for both the MCP server and the Chrome Extension from a single root.
 - **Git:** Version control for tracking project changes and collaborating with other developers.
 - **ESLint / Prettier:** Linting and formatting tools to maintain code quality and consistency.
+- **Jest & specialized environments:** Comprehensive unit testing using Jest, enhanced with `jest-chrome` for mocking browser APIs and `jest-environment-jsdom` for simulating the browser's DOM environment.
