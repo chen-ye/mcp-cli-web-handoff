@@ -7,10 +7,10 @@
 - [x] d4e5175 Task: Implement the `delegate_web_research` tool
     - [x] Define the tool's input schema (e.g., research prompt)
     - [x] Implement the core tool logic in the MCP server
-- [~] Task: Implement the WebSocket server and token generation
-    - [ ] Develop a secure, one-time token generation mechanism
-    - [ ] Integrate the WebSocket server into the MCP tool invocation logic
-- [ ] Task: Implement CLI suspension and prompt formulation
+- [x] 2032e43 Task: Implement the WebSocket server and token generation
+    - [x] Develop a secure, one-time token generation mechanism
+    - [x] Integrate the WebSocket server into the MCP tool invocation logic
+- [~] Task: Implement CLI suspension and prompt formulation
     - [ ] Formulate the highly structured research prompt for the browser extension
     - [ ] Return the correct suspension message to the CLI agent
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Core MCP Server and WebSocket Foundation' (Protocol in workflow.md)
