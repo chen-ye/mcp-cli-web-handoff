@@ -28,7 +28,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Side Panel UI Implementation' (Protocol in workflow.md)
 
 ## Phase 4: Final Integration and Verification
-- [ ] Task: Implement content script for status monitoring
+- [~] Task: Implement content script for status monitoring
     - [ ] Create `content.ts` to monitor `gemini.google.com`
     - [ ] Send status updates to the Side Panel
 - [ ] Task: Perform end-to-end handoff testing
