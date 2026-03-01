@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Project specific
+mcp-server/dist/
+mcp-server/node_modules/
+chrome-extension/node_modules/
+
+# SECRETS (VERY IMPORTANT)
+.env
+.env.local
+.gemini/web-handoff-token
