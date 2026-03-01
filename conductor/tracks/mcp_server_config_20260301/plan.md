@@ -14,3 +14,9 @@
     - [x] Formulate the highly structured research prompt for the browser extension
     - [x] Return the correct suspension message to the CLI agent
 - [x] af79c21 Task: Conductor - User Manual Verification 'Phase 1: Core MCP Server and WebSocket Foundation' (Protocol in workflow.md)
+
+## Multi-instance Support
+- [x] Task: Refactor architecture to use a canonical WebSocket daemon
+    - [x] Create a standalone WebSocket daemon script with routing and idle timeout
+    - [x] Implement MCP server logic to spawn (if free) or connect to the daemon
+    - [x] Update tool logic to communicate via the daemon

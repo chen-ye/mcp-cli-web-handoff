@@ -3,23 +3,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.delegateWebResearchSchema = void 0;
 exports.handleDelegateWebResearch = handleDelegateWebResearch;
 const zod_1 = require("zod");
-const websocket_1 = require("./websocket");
+const client_1 = require("./client");
 exports.delegateWebResearchSchema = zod_1.z.object({
     prompt: zod_1.z.string().describe("The research prompt to delegate to the web interface"),
 });
 async function handleDelegateWebResearch(args) {
-    // Start the server if it isn't running
-    (0, websocket_1.startWebSocketServer)();
-    // Generate a new secure, one-time token for this request
-    const token = (0, websocket_1.generateToken)();
-    // Store the prompt so it can be sent to the browser extension upon connection
-    (0, websocket_1.setPendingPrompt)(args.prompt);
-    // We will return a specific message to the CLI agent that instructs it to pause execution
-    // while the local WebSocket Server waits for a response from the browser extension.
-    return {
-        content: [{
-                type: "text",
-                text: `Delegated web research. Awaiting response via WebSocket.\nConnect using token: ${token}`
-            }]
-    };
+    try {
+        const token = await (0, client_1.ensureDaemonRunning)();
+        await (0, client_1.sendPromptToDaemon)(args.prompt);
+        return {
+            content: [{
+                    type: "text",
+                    text: `Delegated web research. Awaiting response via WebSocket.\nConnect Chrome Extension using ws://127.0.0.1:8080/ext?token=${token}`
+                }]
+        };
+    }
+    catch (error) {
+        return {
+            content: [{
+                    type: "text",
+                    text: `Failed to delegate web research: ${error.message}`
+                }],
+            isError: true
+        };
+    }
 }
