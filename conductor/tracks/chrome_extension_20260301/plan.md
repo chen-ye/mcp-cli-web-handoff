@@ -10,12 +10,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Extension Scaffolding and Basic Manifest' (Protocol in workflow.md)
 
 ## Phase 2: WebSocket and Background Communication
-- [ ] Task: Implement WebSocket connection logic in background worker
-    - [ ] **Write Tests:** Validate WebSocket connection, auth handling, and pings
-    - [ ] **Implement:** Add connection logic to `background.ts` with error handling
-- [ ] Task: Implement keep-alive mechanism
-    - [ ] **Write Tests:** Ensure the service worker doesn't hibernate during active tasks
-    - [ ] **Implement:** Add ping/pong logic to maintain the connection
+- [x] 1e4549e Task: Implement WebSocket connection logic in background worker
+    - [x] **Write Tests:** Validate WebSocket connection, auth handling, and pings
+    - [x] **Implement:** Add connection logic to `background.ts` with error handling
+- [x] 1e4549e Task: Implement keep-alive mechanism
+    - [x] **Write Tests:** Ensure the service worker doesn't hibernate during active tasks
+    - [x] **Implement:** Add ping/pong logic to maintain the connection
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: WebSocket and Background Communication' (Protocol in workflow.md)
 
 ## Phase 3: Side Panel UI Implementation
