@@ -5,8 +5,8 @@ import AdmZip from "adm-zip";
 import path from "path";
 
 export const delegateWebResearchSchema = z.object({
-  prompt: z.string().describe("The research prompt to delegate to the web interface"),
-  context_files: z.array(z.string()).max(10, "Array must contain at most 10 element(s)").optional().describe("An optional array of up to 10 specific local file paths to be provided to the web interface as Context ZIP"),
+  prompt: z.string().describe("The comprehensive research prompt or task to delegate to the Gemini web interface. Use this when the task requires advanced reasoning, extensive web browsing, multi-modal analysis, or features like 'Projects' and 'Gems' that are better handled in the browser."),
+  context_files: z.array(z.string()).max(10, "Array must contain at most 10 element(s)").optional().describe("An optional array of up to 10 specific local file paths to provide as a Context ZIP for targeted analysis. For entire codebase uploads, the user will be prompted to use the 'Copy Project Path' button in the side panel."),
 });
 
 export interface ToolDependencies {
