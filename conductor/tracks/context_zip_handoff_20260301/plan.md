@@ -13,11 +13,11 @@
 - [x] a938723 Task: Conductor - User Manual Verification 'Phase 1: MCP Server Updates' (Protocol in workflow.md)
 
 ## Phase 2: Chrome Extension Updates
-- [ ] Task: Add "Copy Project Path" UI
-    - [ ] **Implement:** Update `sidepanel.html` and `sidepanel.css` to add the "Copy Project Path" button.
-    - [ ] **Implement:** Update `sidepanel.js` to receive the path from the background worker and use `navigator.clipboard.writeText()` when the button is clicked.
-- [ ] Task: Implement "Copy Context ZIP" functionality
-    - [ ] **Implement:** Handle the incoming ZIP payload in `background.js` and forward it to the Side Panel.
-    - [ ] **Implement:** Construct a `ClipboardItem` in `sidepanel.js` using the received ZIP data (with the correct MIME type).
-    - [ ] **Implement:** Enable the existing "Copy Context" button and attach a click listener to use `navigator.clipboard.write()` to copy the ZIP file to the clipboard.
+- [x] cfdc972 Task: Add "Copy Project Path" UI
+    - [x] **Implement:** Update `sidepanel.html` and `sidepanel.css` to add the "Copy Project Path" button.
+    - [x] **Implement:** Update `sidepanel.js` to receive the path from the background worker and use `navigator.clipboard.writeText()` when the button is clicked.
+- [x] cfdc972 Task: Implement "Copy Context ZIP" functionality
+    - [x] **Implement:** Handle the incoming ZIP payload in `background.js` and forward it to the Side Panel.
+    - [x] **Implement:** Construct a `ClipboardItem` in `sidepanel.js` using the received ZIP data (with the correct MIME type).
+    - [x] **Implement:** Enable the existing "Copy Context" button and attach a click listener to use `navigator.clipboard.write()` to copy the ZIP file to the clipboard.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension Updates' (Protocol in workflow.md)
