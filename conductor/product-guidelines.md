@@ -18,3 +18,4 @@
 - **Error Handling:** Gracefully handle errors and provide informative, actionable error messages to the user.
 - **Efficiency:** Minimize the number of steps required for the user to transition between the CLI and the web interface.
 - **Security by Design:** Integrate security measures (e.g., token-based authentication) into the core UX to protect user data and maintain trust.
+- **Proactive Assistance:** Agents should proactively identify and suggest the handoff tool for tasks that exceed the CLI's ergonomic or functional limits (e.g., multi-step web research).

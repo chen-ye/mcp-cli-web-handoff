@@ -24,6 +24,7 @@ The Gemini-to-Web Handoff project aims to provide a seamless and secure bridge b
 - **Manual Clipboard Integration:** Uses the `navigator.clipboard` API for moving structured prompts, OS-native absolute project paths (for bulk codebase uploads), and targeted, in-memory ZIP archives of up to 10 specific context files into the user's clipboard for easy pasting into Gemini.
 - **Suspension Loop:** Automatically pauses the CLI agent's execution while the browser-side research is in progress, resuming once the response is returned.
 - **Completion Notifications:** Monitors the Gemini web interface for response completion and sends a native system notification to the user, reducing the need for constant polling.
+- **Proactive Agent Assistance:** The Gemini CLI agent is equipped with specific instructions to proactively identify tasks that are better suited for the browser and suggest using the handoff tool.
 
 ## Success Metrics
 - **User Efficiency:** Reduction in manual steps (copying, pasting, context-switching) required to move a task from the terminal to the browser.
