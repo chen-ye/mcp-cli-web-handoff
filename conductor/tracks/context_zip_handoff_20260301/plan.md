@@ -1,10 +1,10 @@
 # Implementation Plan: Context ZIP Compression & Handoff
 
 ## Phase 1: MCP Server Updates
-- [ ] Task: Update `delegate_web_research` input schema
-    - [ ] **Write Tests:** Ensure validation fails and returns an error when >10 files are provided in `context_files`.
-    - [ ] **Implement:** Add the optional `context_files` array to the tool schema and enforce the limit.
-- [ ] Task: Implement in-memory ZIP generation
+- [x] c68b074 Task: Update `delegate_web_research` input schema
+    - [x] **Write Tests:** Ensure validation fails and returns an error when >10 files are provided in `context_files`.
+    - [x] **Implement:** Add the optional `context_files` array to the tool schema and enforce the limit.
+- [~] Task: Implement in-memory ZIP generation
     - [ ] **Write Tests:** Verify the ability to read requested files and compress them into an in-memory buffer.
     - [ ] **Implement:** Integrate a ZIP library (e.g., `adm-zip` or `jszip`) to compress the requested files.
 - [ ] Task: Implement OS-native project path resolution
