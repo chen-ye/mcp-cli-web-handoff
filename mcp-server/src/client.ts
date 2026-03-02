@@ -52,12 +52,18 @@ export async function ensureDaemonRunning(): Promise<string> {
   });
 }
 
-export function sendPromptToDaemon(prompt: string): Promise<void> {
+export interface DaemonPayload {
+  prompt: string;
+  projectPath: string;
+  zipData?: string; // base64 encoded
+}
+
+export function sendPayloadToDaemon(payload: DaemonPayload): Promise<void> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(`ws://127.0.0.1:${PORT}/mcp`);
     
     ws.on("open", () => {
-      ws.send(JSON.stringify({ type: "prompt", data: prompt }));
+      ws.send(JSON.stringify({ type: "payload", data: payload }));
       ws.close();
       resolve();
     });

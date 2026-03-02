@@ -1,4 +1,4 @@
-import { ensureDaemonRunning, sendPromptToDaemon } from "../client";
+import { ensureDaemonRunning, sendPayloadToDaemon } from "../client";
 import * as cp from "child_process";
 import * as fs from "fs";
 import { WebSocket } from "ws";
@@ -66,8 +66,8 @@ describe("client", () => {
     });
   });
 
-  describe("sendPromptToDaemon", () => {
-    it("should send prompt and resolve when connected", async () => {
+  describe("sendPayloadToDaemon", () => {
+    it("should send payload and resolve when connected", async () => {
       const mockWs = {
         on: jest.fn().mockImplementation((event, callback) => {
           if (event === "open") {
@@ -79,9 +79,33 @@ describe("client", () => {
       };
       (WebSocket as unknown as jest.Mock).mockImplementation(() => mockWs);
 
-      await sendPromptToDaemon("test prompt");
+      await sendPayloadToDaemon({ prompt: "test prompt", projectPath: "/test/path" });
       
-      expect(mockWs.send).toHaveBeenCalledWith(JSON.stringify({ type: "prompt", data: "test prompt" }));
+      expect(mockWs.send).toHaveBeenCalledWith(JSON.stringify({ 
+        type: "payload", 
+        data: { prompt: "test prompt", projectPath: "/test/path" } 
+      }));
+      expect(mockWs.close).toHaveBeenCalled();
+    });
+
+    it("should send payload with zipData when connected", async () => {
+      const mockWs = {
+        on: jest.fn().mockImplementation((event, callback) => {
+          if (event === "open") {
+            callback();
+          }
+        }),
+        send: jest.fn(),
+        close: jest.fn(),
+      };
+      (WebSocket as unknown as jest.Mock).mockImplementation(() => mockWs);
+
+      await sendPayloadToDaemon({ prompt: "test prompt", projectPath: "/test/path", zipData: "base64data" });
+      
+      expect(mockWs.send).toHaveBeenCalledWith(JSON.stringify({ 
+        type: "payload", 
+        data: { prompt: "test prompt", projectPath: "/test/path", zipData: "base64data" } 
+      }));
       expect(mockWs.close).toHaveBeenCalled();
     });
   });

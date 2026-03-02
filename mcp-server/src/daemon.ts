@@ -15,7 +15,7 @@ let wss: WebSocketServer;
 
 const mcpClients = new Set<WebSocket>();
 const extClients = new Set<WebSocket>();
-let pendingPrompts: string[] = [];
+let pendingPayloads: any[] = [];
 let idleTimeout: NodeJS.Timeout | null = null;
 
 function generateToken() {
@@ -89,10 +89,10 @@ wss.on("connection", (ws: WebSocket, request: http.IncomingMessage, role: "ext" 
 
   if (role === "ext") {
     console.log("Extension connected.");
-    // Send any pending prompts
-    while (pendingPrompts.length > 0) {
-      const prompt = pendingPrompts.shift();
-      ws.send(JSON.stringify({ type: "prompt", data: prompt }));
+    // Send any pending payloads
+    while (pendingPayloads.length > 0) {
+      const payload = pendingPayloads.shift();
+      ws.send(JSON.stringify({ type: "payload", data: payload }));
     }
   } else if (role === "mcp") {
     console.log("MCP Client connected.");
@@ -109,8 +109,8 @@ wss.on("connection", (ws: WebSocket, request: http.IncomingMessage, role: "ext" 
         // Buffer if no extensions are connected yet
         try {
           const parsed = JSON.parse(message.toString());
-          if (parsed.type === "prompt" && typeof parsed.data === "string") {
-            pendingPrompts.push(parsed.data);
+          if (parsed.type === "payload" && parsed.data) {
+            pendingPayloads.push(parsed.data);
           }
         } catch(e) {
           // ignore invalid json
