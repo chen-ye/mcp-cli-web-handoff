@@ -21,3 +21,6 @@
     - [x] **Implement:** Construct a `ClipboardItem` in `sidepanel.js` using the received ZIP data (with the correct MIME type).
     - [x] **Implement:** Enable the existing "Copy Context" button and attach a click listener to use `navigator.clipboard.write()` to copy the ZIP file to the clipboard.
 - [x] a707e0c Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension Updates' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] 9025552 Task: Apply review suggestions
