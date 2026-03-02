@@ -4,19 +4,27 @@ const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
 const promptDisplay = document.getElementById('prompt-display');
 const copyPromptBtn = document.getElementById('copy-prompt-btn');
+const copyProjectPathBtn = document.getElementById('copy-project-path-btn');
 const copyContextBtn = document.getElementById('copy-context-btn');
 const webResponse = document.getElementById('web-response');
 const submitResponseBtn = document.getElementById('submit-response-btn');
 const tokenInput = document.getElementById('token-input');
 const saveTokenBtn = document.getElementById('save-token-btn');
 
+let currentProjectPath = null;
+let currentZipData = null;
+
 // Initialize UI from storage
-chrome.storage.local.get(['token', 'pendingPrompt', 'connected'], (result) => {
+chrome.storage.local.get(['token', 'pendingPrompt', 'projectPath', 'zipData', 'connected'], (result) => {
   if (result.token) {
     tokenInput.value = result.token;
   }
   if (result.pendingPrompt) {
-    updatePromptUI(result.pendingPrompt);
+    updatePayloadUI({
+      prompt: result.pendingPrompt,
+      projectPath: result.projectPath,
+      zipData: result.zipData
+    });
   }
   updateConnectionStatus(result.connected || false);
 });
@@ -31,17 +39,21 @@ function updateConnectionStatus(connected) {
   }
 }
 
-function updatePromptUI(prompt) {
-  promptDisplay.textContent = prompt;
-  copyPromptBtn.disabled = !prompt;
-  // Context button logic will be added in a later phase
-  copyContextBtn.disabled = true; 
+function updatePayloadUI(payload) {
+  promptDisplay.textContent = payload.prompt || '';
+  copyPromptBtn.disabled = !payload.prompt;
+  
+  currentProjectPath = payload.projectPath;
+  copyProjectPathBtn.disabled = !currentProjectPath;
+
+  currentZipData = payload.zipData;
+  copyContextBtn.disabled = !currentZipData;
 }
 
 // Handle messages from background worker
 chrome.runtime.onMessage.addListener((message) => {
-  if (message.type === 'newPrompt') {
-    updatePromptUI(message.data);
+  if (message.type === 'newPayload') {
+    updatePayloadUI(message.data);
   } else if (message.type === 'connectionStatus') {
     updateConnectionStatus(message.connected);
   } else if (message.type === 'geminiStatus') {
@@ -53,20 +65,54 @@ chrome.runtime.onMessage.addListener((message) => {
   }
 });
 
+// Helper for copy buttons
+async function handleCopy(btn, action) {
+  const originalText = btn.textContent;
+  try {
+    await action();
+    btn.textContent = 'Copied!';
+  } catch (err) {
+    console.error('Failed to copy:', err);
+    btn.textContent = 'Error!';
+  }
+  setTimeout(() => {
+    btn.textContent = originalText;
+  }, 2000);
+}
+
 // Copy Prompt to Clipboard
-copyPromptBtn.addEventListener('click', async () => {
+copyPromptBtn.addEventListener('click', () => {
   const prompt = promptDisplay.textContent;
   if (prompt) {
-    try {
-      await navigator.clipboard.writeText(prompt);
-      const originalText = copyPromptBtn.textContent;
-      copyPromptBtn.textContent = 'Copied!';
-      setTimeout(() => {
-        copyPromptBtn.textContent = originalText;
-      }, 2000);
-    } catch (err) {
-      console.error('Failed to copy prompt:', err);
-    }
+    handleCopy(copyPromptBtn, () => navigator.clipboard.writeText(prompt));
+  }
+});
+
+// Copy Project Path to Clipboard
+copyProjectPathBtn.addEventListener('click', () => {
+  if (currentProjectPath) {
+    handleCopy(copyProjectPathBtn, () => navigator.clipboard.writeText(currentProjectPath));
+  }
+});
+
+// Copy Context ZIP to Clipboard
+function base64ToBlob(base64, mime) {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mime });
+}
+
+copyContextBtn.addEventListener('click', () => {
+  if (currentZipData) {
+    handleCopy(copyContextBtn, async () => {
+      const blob = base64ToBlob(currentZipData, 'application/zip');
+      const item = new ClipboardItem({ 'application/zip': blob });
+      await navigator.clipboard.write([item]);
+    });
   }
 });
 

@@ -39,11 +39,19 @@ function connect() {
     socket.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data);
-        if (message.type === "prompt") {
-          console.log("Received prompt from CLI:", message.data);
-          chrome.storage.local.set({ pendingPrompt: message.data }, () => {
+        if (message.type === "payload") {
+          console.log("Received payload from CLI");
+          // Store the full payload
+          chrome.storage.local.set({ 
+            pendingPrompt: message.data.prompt,
+            projectPath: message.data.projectPath,
+            zipData: message.data.zipData
+          }, () => {
             // Notify side panel if it's open
-            chrome.runtime.sendMessage({ type: "newPrompt", data: message.data });
+            chrome.runtime.sendMessage({ 
+              type: "newPayload", 
+              data: message.data 
+            });
           });
         }
       } catch (error) {
