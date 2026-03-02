@@ -15,7 +15,7 @@ let wss: WebSocketServer;
 
 const mcpClients = new Set<WebSocket>();
 const extClients = new Set<WebSocket>();
-let pendingPayloads: any[] = [];
+let pendingPayloads: unknown[] = [];
 let idleTimeout: NodeJS.Timeout | null = null;
 
 function generateToken() {

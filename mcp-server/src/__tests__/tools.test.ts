@@ -4,7 +4,7 @@ import AdmZip from "adm-zip";
 
 jest.mock("../client", () => ({
   ensureDaemonRunning: jest.fn().mockResolvedValue("mock-token"),
-  sendPromptToDaemon: jest.fn().mockResolvedValue(undefined),
+  sendPayloadToDaemon: jest.fn().mockResolvedValue(undefined),
 }));
 
 jest.mock("fs", () => ({

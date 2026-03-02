@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ensureDaemonRunning, sendPromptToDaemon } from "./client";
+import { ensureDaemonRunning, sendPayloadToDaemon } from "./client";
 import fs from "fs";
 import AdmZip from "adm-zip";
 import path from "path";
@@ -28,8 +28,14 @@ export async function handleDelegateWebResearch(args: z.infer<typeof delegateWeb
       zipBuffer = zip.toBuffer();
     }
     
-    // In the next task, we will send the zipBuffer to the daemon. For now, we just pass the prompt.
-    await sendPromptToDaemon(args.prompt);
+    // The current working directory is considered the project root in this context.
+    const projectPath = process.cwd();
+    
+    await sendPayloadToDaemon({
+      prompt: args.prompt,
+      projectPath: projectPath,
+      zipData: zipBuffer ? zipBuffer.toString("base64") : undefined
+    });
     
     return {
       content: [{ 
@@ -37,11 +43,11 @@ export async function handleDelegateWebResearch(args: z.infer<typeof delegateWeb
         text: `Delegated web research. Awaiting response via WebSocket.\nConnect Chrome Extension using ws://127.0.0.1:8080/ext?token=${token}`
       }]
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       content: [{
         type: "text" as const,
-        text: `Failed to delegate web research: ${error.message}`
+        text: `Failed to delegate web research: ${error instanceof Error ? error.message : String(error)}`
       }],
       isError: true
     };
