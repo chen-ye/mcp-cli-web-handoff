@@ -13,10 +13,12 @@
   "type": "commonjs",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
+    "adm-zip": "^0.5.16",
     "ws": "^8.19.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.3.3",
     "@types/ws": "^8.18.1",

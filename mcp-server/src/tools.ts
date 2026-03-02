@@ -1,5 +1,8 @@
 import { z } from "zod";
 import { ensureDaemonRunning, sendPromptToDaemon } from "./client";
+import fs from "fs";
+import AdmZip from "adm-zip";
+import path from "path";
 
 export const delegateWebResearchSchema = z.object({
   prompt: z.string().describe("The research prompt to delegate to the web interface"),
@@ -9,6 +12,23 @@ export const delegateWebResearchSchema = z.object({
 export async function handleDelegateWebResearch(args: z.infer<typeof delegateWebResearchSchema>) {
   try {
     const token = await ensureDaemonRunning();
+    
+    let zipBuffer: Buffer | undefined;
+    
+    if (args.context_files && args.context_files.length > 0) {
+      const zip = new AdmZip();
+      for (const filePath of args.context_files) {
+        if (fs.existsSync(filePath)) {
+          const fileContent = fs.readFileSync(filePath);
+          zip.addFile(path.basename(filePath), fileContent);
+        } else {
+          console.warn(`File not found: ${filePath}, skipping...`);
+        }
+      }
+      zipBuffer = zip.toBuffer();
+    }
+    
+    // In the next task, we will send the zipBuffer to the daemon. For now, we just pass the prompt.
     await sendPromptToDaemon(args.prompt);
     
     return {
