@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "web-handoff": {
+      "command": "node",
+      "args": ["mcp-server/dist/index.js"]
+    }
+  }
+}
