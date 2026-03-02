@@ -22,7 +22,7 @@ The Gemini-to-Web Handoff project aims to provide a seamless and secure bridge b
 - **Chrome Extension (Manifest V3):** A background service worker to maintain the WebSocket connection and a Side Panel for user interactions.
 - **Side Panel Interface:** A dedicated UI providing "Copy Prompt" and "Copy Context" buttons (CLI-to-Web), along with a "Paste Web Response" input field (Web-to-CLI) to return content to the CLI agent.
 - **Manual Clipboard Integration:** Uses the `navigator.clipboard` API for moving structured prompts, OS-native absolute project paths (for bulk codebase uploads), and targeted, in-memory ZIP archives of up to 10 specific context files into the user's clipboard for easy pasting into Gemini.
-- **Suspension Loop:** Automatically pauses the CLI agent's execution while the browser-side research is in progress, resuming once the response is returned.
+- **Suspension Loop:** A two-step blocking mechanism (`delegate` -> `get_result`) that effectively pauses the CLI agent's execution while browser-side research is in progress, ensuring the agent waits for the results before proceeding.
 - **Completion Notifications:** Monitors the Gemini web interface for response completion and sends a native system notification to the user, reducing the need for constant polling.
 - **Proactive Agent Assistance:** The Gemini CLI agent is equipped with specific instructions to proactively identify tasks that are better suited for the browser and suggest using the handoff tool.
 
