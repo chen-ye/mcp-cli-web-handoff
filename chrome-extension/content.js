@@ -12,9 +12,26 @@ function checkGeminiStatus() {
   }
 }
 
-// Observe changes to detect when the interface might be ready
+let isGenerating = false;
+
+// Function to monitor response completion
+function monitorCompletion() {
+  const stopButton = document.querySelector('button[aria-label="Stop generating"]');
+  
+  if (stopButton && !isGenerating) {
+    console.log("Gemini started generating...");
+    isGenerating = true;
+  } else if (!stopButton && isGenerating) {
+    console.log("Gemini finished generating!");
+    isGenerating = false;
+    chrome.runtime.sendMessage({ type: "responseComplete" });
+  }
+}
+
+// Observe changes to detect when the interface might be ready or finished generating
 const observer = new MutationObserver(() => {
   checkGeminiStatus();
+  monitorCompletion();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });

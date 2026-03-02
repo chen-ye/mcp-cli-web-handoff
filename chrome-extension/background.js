@@ -73,7 +73,7 @@ function connect() {
   });
 }
 
-// Handle messages from side panel
+// Handle messages from content script or side panel
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "webResponse") {
     if (socket && socket.readyState === WebSocket.OPEN) {
@@ -82,6 +82,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     } else {
       sendResponse({ success: false, error: "WebSocket not connected" });
     }
+  } else if (message.type === "responseComplete") {
+    chrome.notifications.create({
+      type: "basic",
+      iconUrl: "icons/icon128.png",
+      title: "Gemini Web Handoff",
+      message: "Gemini has finished generating the response.",
+      priority: 2
+    });
   }
 });
 
