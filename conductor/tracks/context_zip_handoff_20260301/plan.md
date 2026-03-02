@@ -1,16 +1,16 @@
 # Implementation Plan: Context ZIP Compression & Handoff
 
-## Phase 1: MCP Server Updates
+## Phase 1: MCP Server Updates [checkpoint: a938723]
 - [x] c68b074 Task: Update `delegate_web_research` input schema
     - [x] **Write Tests:** Ensure validation fails and returns an error when >10 files are provided in `context_files`.
     - [x] **Implement:** Add the optional `context_files` array to the tool schema and enforce the limit.
 - [x] 42341b4 Task: Implement in-memory ZIP generation
     - [x] **Write Tests:** Verify the ability to read requested files and compress them into an in-memory buffer.
     - [x] **Implement:** Integrate a ZIP library (e.g., `adm-zip` or `jszip`) to compress the requested files.
-- [~] Task: Implement OS-native project path resolution
-    - [ ] **Write Tests:** Verify the absolute path to the project root is accurately resolved and formatted for the Host OS.
-    - [ ] **Implement:** Update the WebSocket payload to include the OS-native project path and the generated ZIP buffer (if any).
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: MCP Server Updates' (Protocol in workflow.md)
+- [x] 63af145 Task: Implement OS-native project path resolution
+    - [x] **Write Tests:** Verify the absolute path to the project root is accurately resolved and formatted for the Host OS.
+    - [x] **Implement:** Update the WebSocket payload to include the OS-native project path and the generated ZIP buffer (if any).
+- [x] a938723 Task: Conductor - User Manual Verification 'Phase 1: MCP Server Updates' (Protocol in workflow.md)
 
 ## Phase 2: Chrome Extension Updates
 - [ ] Task: Add "Copy Project Path" UI
