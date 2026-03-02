@@ -4,9 +4,9 @@
 - [x] 0438f9f Task: Initialize Playwright project
     - [x] **Implement:** Install `@playwright/test` and initialize configuration in `tests/e2e/playwright.config.ts`.
     - [x] **Implement:** Configure Playwright to support loading the Chrome Extension.
-- [~] Task: Implement MCP Client Wrapper for Tests
-    - [ ] **Implement:** Create a utility in `tests/e2e/mcp-client.ts` that wraps `mcp-cli` to trigger tool calls programmatically.
-- [ ] Task: Implement functional MCP + Extension tests
+- [x] 575eb63 Task: Implement MCP Client Wrapper for Tests
+    - [x] **Implement:** Create a utility in `tests/e2e/mcp-client.ts` that wraps `mcp-cli` to trigger tool calls programmatically.
+- [~] Task: Implement functional MCP + Extension tests
     - [ ] **Implement:** Create `tests/e2e/handoff.spec.ts`.
     - [ ] **Implement:** Use `mcp-cli` wrapper to call `delegate_web_research` and verify using Playwright that the Side Panel UI updates correctly.
     - [ ] **Implement:** Verify the lifecycle of the WebSocket daemon (lazy startup, token auth) via these integrated tests.
