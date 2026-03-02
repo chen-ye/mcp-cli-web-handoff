@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "test": "jest --testPathIgnorePatterns=dist"
+    "test": "npx playwright test ../tests/unit"
   },
   "keywords": [],
   "author": "",
@@ -19,11 +19,8 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.7",
-    "@types/jest": "^30.0.0",
     "@types/node": "^25.3.3",
     "@types/ws": "^8.18.1",
-    "jest": "^30.2.0",
-    "ts-jest": "^29.4.6",
     "typescript": "^5.9.3"
   }
 }

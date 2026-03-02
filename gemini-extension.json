@@ -1,0 +1,11 @@
+{
+  "name": "web-handoff",
+  "version": "1.0.0",
+  "description": "Seamlessly hand off research tasks from Gemini CLI to gemini.google.com via a Chrome Extension.",
+  "mcpServers": {
+    "web-handoff": {
+      "command": "node",
+      "args": ["${extensionPath}/mcp-server/dist/index.js"]
+    }
+  }
+}

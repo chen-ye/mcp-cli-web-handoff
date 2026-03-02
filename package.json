@@ -4,14 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test --workspace=mcp-server",
+    "test": "npx playwright test",
+    "test:unit": "npx playwright test tests/unit",
     "test:e2e": "node tests/e2e/setup-test-extension.js && npx playwright test tests/e2e/handoff.spec.ts"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/mcp-server/src/"
-    ]
   },
   "keywords": [],
   "author": "",
@@ -22,9 +17,8 @@
   ],
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "jest": "^30.2.0",
-    "jest-chrome": "^0.8.0",
-    "jest-environment-jsdom": "^30.2.0",
-    "puppeteer": "^24.37.5"
+    "@types/sinon": "^21.0.0",
+    "puppeteer": "^24.37.5",
+    "sinon": "^21.0.1"
   }
 }

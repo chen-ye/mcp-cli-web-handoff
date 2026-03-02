@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ensureDaemonRunning, sendPayloadToDaemon } from "./client";
+import * as client from "./client";
 import fs from "fs";
 import AdmZip from "adm-zip";
 import path from "path";
@@ -9,17 +9,36 @@ export const delegateWebResearchSchema = z.object({
   context_files: z.array(z.string()).max(10, "Array must contain at most 10 element(s)").optional().describe("An optional array of up to 10 specific local file paths to be provided to the web interface as Context ZIP"),
 });
 
-export async function handleDelegateWebResearch(args: z.infer<typeof delegateWebResearchSchema>) {
+export interface ToolDependencies {
+  ensureDaemonRunning: typeof client.ensureDaemonRunning;
+  sendPayloadToDaemon: typeof client.sendPayloadToDaemon;
+  existsSync: typeof fs.existsSync;
+  readFileSync: typeof fs.readFileSync;
+  Zip: typeof AdmZip;
+}
+
+const defaultDeps: ToolDependencies = {
+  ensureDaemonRunning: client.ensureDaemonRunning,
+  sendPayloadToDaemon: client.sendPayloadToDaemon,
+  existsSync: fs.existsSync,
+  readFileSync: fs.readFileSync,
+  Zip: AdmZip,
+};
+
+export async function handleDelegateWebResearch(
+  args: z.infer<typeof delegateWebResearchSchema>,
+  deps: ToolDependencies = defaultDeps
+) {
   try {
-    const token = await ensureDaemonRunning();
+    const token = await deps.ensureDaemonRunning();
     
     let zipBuffer: Buffer | undefined;
     
     if (args.context_files && args.context_files.length > 0) {
-      const zip = new AdmZip();
+      const zip = new deps.Zip();
       for (const filePath of args.context_files) {
-        if (fs.existsSync(filePath)) {
-          const fileContent = fs.readFileSync(filePath);
+        if (deps.existsSync(filePath)) {
+          const fileContent = deps.readFileSync(filePath);
           zip.addFile(path.basename(filePath), fileContent);
         } else {
           console.warn(`File not found: ${filePath}, skipping...`);
@@ -31,7 +50,7 @@ export async function handleDelegateWebResearch(args: z.infer<typeof delegateWeb
     // The current working directory is considered the project root in this context.
     const projectPath = process.cwd();
     
-    await sendPayloadToDaemon({
+    await deps.sendPayloadToDaemon({
       prompt: args.prompt,
       projectPath: projectPath,
       zipData: zipBuffer ? zipBuffer.toString("base64") : undefined

@@ -9,7 +9,11 @@ const server = new McpServer({
 });
 
 // Register the tool
-server.tool("delegate_web_research", delegateWebResearchSchema.shape, handleDelegateWebResearch);
+server.tool(
+  "delegate_web_research", 
+  delegateWebResearchSchema.shape, 
+  (args) => handleDelegateWebResearch(args)
+);
 
 // Start the server on stdio
 async function main() {

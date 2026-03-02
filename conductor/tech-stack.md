@@ -19,6 +19,6 @@
 - **npm Workspaces:** Unified project management using npm workspaces to manage dependencies for both the MCP server and the Chrome Extension from a single root.
 - **Git:** Version control for tracking project changes and collaborating with other developers.
 - **ESLint / Prettier:** Linting and formatting tools to maintain code quality and consistency.
-- **Jest & specialized environments:** Unit testing using Jest, enhanced with `jest-chrome` for mocking browser APIs.
-- **Playwright:** High-fidelity end-to-end (E2E) testing framework used to verify the full handoff loop and extension UI in a real browser environment.
-- **GitHub Actions:** Continuous Integration (CI) platform for automating the execution of unit and E2E tests on every code change.
+- **Playwright:** The unified testing framework for the entire project, used for both high-fidelity end-to-end (E2E) verification and fast unit/component testing.
+- **sinon:** A lightweight library for stubs, spies, and mocks in unit tests.
+- **GitHub Actions:** Continuous Integration (CI) platform for automating the execution of tests on every code change.
