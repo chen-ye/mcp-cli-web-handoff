@@ -1,11 +1,19 @@
 # Dependencies
 node_modules/
-# package-lock.json (removed from ignore list to allow root commit)
 
 # Build outputs
 dist/
 build/
 *.tsbuildinfo
+mcp-server/dist/
+
+# Test artifacts
+mcp-server/coverage/
+test-results/
+playwright-report/
+blob-report/
+tests/e2e/extension-test/
+tests/e2e/extension-id.json
 
 # IDEs
 .vscode/
@@ -14,11 +22,6 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
-
-# Project specific
-mcp-server/dist/
-mcp-server/node_modules/
-chrome-extension/node_modules/
 
 # SECRETS (VERY IMPORTANT)
 .env
