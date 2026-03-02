@@ -1,10 +1,10 @@
 # Implementation Plan: High-Fidelity E2E Testing Infrastructure
 
 ## Phase 1: Playwright Infrastructure & MCP Integration
-- [ ] Task: Initialize Playwright project
-    - [ ] **Implement:** Install `@playwright/test` and initialize configuration in `tests/e2e/playwright.config.ts`.
-    - [ ] **Implement:** Configure Playwright to support loading the Chrome Extension.
-- [ ] Task: Implement MCP Client Wrapper for Tests
+- [x] 0438f9f Task: Initialize Playwright project
+    - [x] **Implement:** Install `@playwright/test` and initialize configuration in `tests/e2e/playwright.config.ts`.
+    - [x] **Implement:** Configure Playwright to support loading the Chrome Extension.
+- [~] Task: Implement MCP Client Wrapper for Tests
     - [ ] **Implement:** Create a utility in `tests/e2e/mcp-client.ts` that wraps `mcp-cli` to trigger tool calls programmatically.
 - [ ] Task: Implement functional MCP + Extension tests
     - [ ] **Implement:** Create `tests/e2e/handoff.spec.ts`.
