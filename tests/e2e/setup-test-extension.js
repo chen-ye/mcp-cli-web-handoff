@@ -5,11 +5,21 @@ const path = require('path');
 const EXTENSION_SRC = path.resolve(__dirname, '../../chrome-extension');
 const EXTENSION_DEST = path.resolve(__dirname, '../../tests/e2e/extension-test');
 
-// 1. Generate RSA Key
-const { publicKey } = crypto.generateKeyPairSync('rsa', {
-  modulusLength: 2048,
-  publicKeyEncoding: { type: 'spki', format: 'der' },
-});
+const KEY_PATH = path.join(__dirname, 'test-extension-key.pem');
+let publicKey;
+
+if (fs.existsSync(KEY_PATH)) {
+  const privateKey = fs.readFileSync(KEY_PATH, 'utf8');
+  publicKey = crypto.createPublicKey(privateKey).export({ type: 'spki', format: 'der' });
+} else {
+  const { privateKey, publicKey: pub } = crypto.generateKeyPairSync('rsa', {
+    modulusLength: 2048,
+    publicKeyEncoding: { type: 'spki', format: 'der' },
+    privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
+  });
+  fs.writeFileSync(KEY_PATH, privateKey);
+  publicKey = pub;
+}
 
 // 2. Calculate Extension ID
 // The ID is the first 32 characters of the SHA256 of the public key,

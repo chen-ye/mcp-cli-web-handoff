@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { exec, spawn, ChildProcess } from 'child_process';
 import path from 'path';
 import util from 'util';
 
@@ -38,4 +38,40 @@ export async function callTool(toolName: string, args: object): Promise<ToolResu
     }
     throw error;
   }
+}
+
+/**
+ * Spawns mcp-cli to call tools asynchronously.
+ * Returns a promise that resolves when the tool call completes.
+ */
+export function spawnTool(toolName: string, args: object): { process: ChildProcess, result: Promise<ToolResult> } {
+  const argsString = JSON.stringify(args);
+  const cp = spawn('mcp-cli', ['--config', CONFIG_PATH, 'call-tool', `web-handoff:${toolName}`, '--args', argsString]);
+  
+  let stdout = '';
+  let stderr = '';
+
+  const result = new Promise<ToolResult>((resolve, reject) => {
+    cp.stdout.on('data', (data) => { stdout += data.toString(); });
+    cp.stderr.on('data', (data) => { stderr += data.toString(); });
+    
+    cp.on('close', (code) => {
+      if (code === 0) {
+        try {
+          resolve(JSON.parse(stdout));
+        } catch (e) {
+          reject(new Error(`Failed to parse mcp-cli output: ${stdout}`));
+        }
+      } else {
+        // Try to parse error response if any
+        try {
+            resolve(JSON.parse(stdout));
+        } catch (e) {
+            reject(new Error(`mcp-cli exited with code ${code}. Stderr: ${stderr}`));
+        }
+      }
+    });
+  });
+
+  return { process: cp, result };
 }

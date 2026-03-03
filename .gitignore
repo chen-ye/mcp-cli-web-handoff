@@ -14,6 +14,7 @@ playwright-report/
 blob-report/
 tests/e2e/extension-test/
 tests/e2e/extension-id.json
+tests/e2e/test-extension-key.pem
 
 # IDEs
 .vscode/

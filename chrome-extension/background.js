@@ -40,13 +40,15 @@ function connect() {
       try {
         const message = JSON.parse(event.data);
         if (message.type === "payload") {
-          console.log("Received payload from CLI");
+          console.log("Received payload from CLI with ID:", message.data.handoff_id);
           // Store the full payload
           chrome.storage.local.set({ 
             pendingPrompt: message.data.prompt,
             projectPath: message.data.projectPath,
-            zipData: message.data.zipData
+            zipData: message.data.zipData,
+            handoffId: message.data.handoff_id
           }, () => {
+            console.log("Stored payload in storage");
             // Notify side panel if it's open
             chrome.runtime.sendMessage({ 
               type: "newPayload", 
@@ -76,10 +78,17 @@ function connect() {
 // Handle messages from content script or side panel
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "webResponse") {
+    const id = message.handoffId;
+    console.log("Relaying webResponse to daemon for ID:", id);
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: "response", data: message.data }));
+      socket.send(JSON.stringify({ 
+        type: "response", 
+        data: message.data,
+        handoff_id: id
+      }));
       sendResponse({ success: true });
     } else {
+      console.error("Cannot relay: WebSocket not connected");
       sendResponse({ success: false, error: "WebSocket not connected" });
     }
   } else if (message.type === "responseComplete") {

@@ -50,9 +50,13 @@ export async function ensureDaemonRunning(deps: ClientDependencies = defaultDeps
 
     function startDaemon() {
       const daemonPath = path.join(__dirname, "daemon.js");
+      const logPath = path.join(os.homedir(), ".gemini", "web-handoff-daemon.log");
+      const out = fs.openSync(logPath, "a");
+      const err = fs.openSync(logPath, "a");
+
       const child = deps.spawn(process.execPath, [daemonPath], {
         detached: true,
-        stdio: "ignore",
+        stdio: ["ignore", out, err],
       });
       child.unref();
 
@@ -65,12 +69,19 @@ export async function ensureDaemonRunning(deps: ClientDependencies = defaultDeps
 }
 
 export interface DaemonPayload {
+  handoff_id: string;
   prompt: string;
   projectPath: string;
   zipData?: string; // base64 encoded
 }
 
-export function sendPayloadToDaemon(payload: DaemonPayload, deps: ClientDependencies = defaultDeps): Promise<void> {
+/**
+ * Sends the payload to the daemon without blocking for the research result.
+ */
+export function sendPayloadToDaemon(
+  payload: DaemonPayload, 
+  deps: ClientDependencies = defaultDeps
+): Promise<void> {
   return new Promise((resolve, reject) => {
     const ws = new deps.WebSocket(`ws://127.0.0.1:${PORT}/mcp`);
     
@@ -82,6 +93,59 @@ export function sendPayloadToDaemon(payload: DaemonPayload, deps: ClientDependen
 
     ws.on("error", (err) => {
       reject(err);
+    });
+  });
+}
+
+/**
+ * Blocks and waits for the research result associated with a handoff_id.
+ */
+export function waitForResult(
+  handoff_id: string,
+  deps: ClientDependencies = defaultDeps,
+  timeoutMs: number = 30 * 60 * 1000 // Default 30 minutes
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    console.log(`Client: Connecting to daemon to wait for ${handoff_id}...`);
+    const ws = new deps.WebSocket(`ws://127.0.0.1:${PORT}/mcp`);
+
+    let timeout: NodeJS.Timeout;
+
+    ws.on("open", () => {
+      console.log(`Client: Connected to daemon, subscribing to ${handoff_id}...`);
+      // Send a request to the daemon to wait for this ID
+      ws.send(JSON.stringify({ type: "subscribe", handoff_id }));
+      
+      timeout = setTimeout(() => {
+        ws.close();
+        reject(new Error("Timeout waiting for research response from browser."));
+      }, timeoutMs);
+    });
+
+    ws.on("message", (data) => {
+      console.log(`Client: Message received from daemon: ${data.toString().slice(0, 100)}...`);
+      try {
+        const message = JSON.parse(data.toString());
+        if (message.type === "response" && message.handoff_id === handoff_id) {
+          console.log(`Client: Matching response found for ${handoff_id}, resolving.`);
+          clearTimeout(timeout);
+          ws.close();
+          resolve(message.data);
+        }
+      } catch (e) {
+        // ignore invalid json
+      }
+    });
+
+    ws.on("error", (err) => {
+      console.error(`Client: WebSocket error:`, err);
+      clearTimeout(timeout);
+      reject(err);
+    });
+
+    ws.on("close", () => {
+      console.log(`Client: WebSocket closed.`);
+      clearTimeout(timeout);
     });
   });
 }

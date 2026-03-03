@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx playwright test",
     "test:unit": "npx playwright test tests/unit",
-    "test:e2e": "node tests/e2e/setup-test-extension.js && npx playwright test tests/e2e/handoff.spec.ts"
+    "test:e2e": "node tests/e2e/setup-test-extension.js && npx playwright test tests/e2e/handoff.spec.ts -c tests/e2e/playwright.config.ts"
   },
   "keywords": [],
   "author": "",

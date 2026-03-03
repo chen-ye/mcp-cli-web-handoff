@@ -13,9 +13,10 @@ const saveTokenBtn = document.getElementById('save-token-btn');
 
 let currentProjectPath = null;
 let currentZipData = null;
+let currentHandoffId = null;
 
 // Initialize UI from storage
-chrome.storage.local.get(['token', 'pendingPrompt', 'projectPath', 'zipData', 'connected'], (result) => {
+chrome.storage.local.get(['token', 'pendingPrompt', 'projectPath', 'zipData', 'handoffId', 'connected'], (result) => {
   if (result.token) {
     tokenInput.value = result.token;
   }
@@ -23,7 +24,8 @@ chrome.storage.local.get(['token', 'pendingPrompt', 'projectPath', 'zipData', 'c
     updatePayloadUI({
       prompt: result.pendingPrompt,
       projectPath: result.projectPath,
-      zipData: result.zipData
+      zipData: result.zipData,
+      handoff_id: result.handoffId
     });
   }
   updateConnectionStatus(result.connected || false);
@@ -48,11 +50,14 @@ function updatePayloadUI(payload) {
 
   currentZipData = payload.zipData;
   copyContextBtn.disabled = !currentZipData;
+
+  currentHandoffId = payload.handoff_id;
 }
 
 // Handle messages from background worker
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === 'newPayload') {
+    console.log('Sidepanel: Received newPayload with ID:', message.data.handoff_id);
     updatePayloadUI(message.data);
   } else if (message.type === 'connectionStatus') {
     updateConnectionStatus(message.connected);
@@ -139,14 +144,23 @@ submitResponseBtn.addEventListener('click', () => {
   const response = webResponse.value.trim();
   if (response) {
     // Send response to background to forward to CLI
-    chrome.runtime.sendMessage({ type: 'webResponse', data: response }, () => {
-      webResponse.value = '';
-      submitResponseBtn.disabled = true;
-      const originalText = submitResponseBtn.textContent;
-      submitResponseBtn.textContent = 'Submitted!';
-      setTimeout(() => {
-        submitResponseBtn.textContent = originalText;
-      }, 2000);
+    chrome.runtime.sendMessage({ 
+      type: 'webResponse', 
+      data: response,
+      handoffId: currentHandoffId
+    }, (result) => {
+      if (result && result.success) {
+        webResponse.value = '';
+        submitResponseBtn.disabled = true;
+        const originalText = submitResponseBtn.textContent;
+        submitResponseBtn.textContent = 'Submitted!';
+        setTimeout(() => {
+          submitResponseBtn.textContent = originalText;
+          submitResponseBtn.disabled = false;
+        }, 2000);
+      } else {
+        alert('Failed to submit: ' + (result?.error || 'Unknown error'));
+      }
     });
   }
 });

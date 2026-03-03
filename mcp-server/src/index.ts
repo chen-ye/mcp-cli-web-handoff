@@ -1,18 +1,23 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { delegateWebResearchSchema, handleDelegateWebResearch } from "./tools";
+import { delegateWebResearchSchema, handleDelegateWebResearch, getResearchResultSchema, handleGetResearchResult } from "./tools.js";
 
-// Initialize the MCP server
 const server = new McpServer({
   name: "gemini-web-handoff",
   version: "1.0.0"
 });
 
-// Register the tool
+// Register the tools
 server.tool(
   "delegate_web_research", 
   delegateWebResearchSchema.shape, 
   (args) => handleDelegateWebResearch(args)
+);
+
+server.tool(
+  "get_research_result",
+  getResearchResultSchema.shape,
+  (args) => handleGetResearchResult(args)
 );
 
 // Start the server on stdio

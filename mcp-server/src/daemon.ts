@@ -18,6 +18,11 @@ const extClients = new Set<WebSocket>();
 let pendingPayloads: unknown[] = [];
 let idleTimeout: NodeJS.Timeout | null = null;
 
+// Track waiting MCP clients by handoff_id
+const waitingMcpClients = new Map<string, Set<WebSocket>>();
+// Store results that haven't been picked up yet
+const pendingResults = new Map<string, string>();
+
 function generateToken() {
   currentToken = crypto.randomBytes(32).toString("hex");
   // Ensure directory exists
@@ -100,26 +105,59 @@ wss.on("connection", (ws: WebSocket, request: http.IncomingMessage, role: "ext" 
 
   ws.on("message", (message: string) => {
     resetIdleTimeout();
-    if (role === "mcp") {
-      // Message from MCP client (e.g. a new prompt)
-      // Route to extension
-      if (extClients.size > 0) {
-        extClients.forEach(ext => ext.send(message.toString()));
-      } else {
-        // Buffer if no extensions are connected yet
-        try {
-          const parsed = JSON.parse(message.toString());
-          if (parsed.type === "payload" && parsed.data) {
+    console.log(`Daemon: Message received from ${role}: ${message.toString().slice(0, 100)}...`);
+    
+    try {
+      const parsed = JSON.parse(message.toString());
+
+      if (role === "mcp") {
+        if (parsed.type === "payload" && parsed.data) {
+          // Route to extension
+          if (extClients.size > 0) {
+            console.log(`Daemon: Routing MCP payload to ${extClients.size} extension(s)`);
+            extClients.forEach(ext => ext.send(message.toString()));
+          } else {
+            console.log("Daemon: Buffering payload (no extensions connected)");
             pendingPayloads.push(parsed.data);
           }
-        } catch(e) {
-          // ignore invalid json
+        } else if (parsed.type === "subscribe" && parsed.handoff_id) {
+          const id = parsed.handoff_id;
+          console.log(`Daemon: MCP client subscribing to result for ${id}`);
+          
+          // If result already arrived, send it immediately
+          if (pendingResults.has(id)) {
+            console.log(`Daemon: Sending cached result for ${id} immediately`);
+            ws.send(JSON.stringify({ type: "response", handoff_id: id, data: pendingResults.get(id) }));
+            pendingResults.delete(id);
+          } else {
+            // Otherwise add to waiting list
+            if (!waitingMcpClients.has(id)) {
+              waitingMcpClients.set(id, new Set());
+            }
+            waitingMcpClients.get(id)!.add(ws);
+          }
+        }
+      } else if (role === "ext") {
+        if (parsed.type === "response" && parsed.handoff_id) {
+          const id = parsed.handoff_id;
+          const result = parsed.data;
+          console.log(`Daemon: Received response for ${id} from extension`);
+
+          const waiters = waitingMcpClients.get(id);
+          if (waiters && waiters.size > 0) {
+            console.log(`Daemon: Routing response to ${waiters.size} waiting MCP client(s)`);
+            waiters.forEach(mcp => {
+              mcp.send(JSON.stringify({ type: "response", handoff_id: id, data: result }));
+            });
+            waitingMcpClients.delete(id);
+          } else {
+            console.log(`Daemon: No waiters for ${id}, caching result`);
+            pendingResults.set(id, result);
+          }
         }
       }
-    } else if (role === "ext") {
-      // Message from Extension (e.g. response from web)
-      // Route back to MCP clients
-      mcpClients.forEach(mcp => mcp.send(message.toString()));
+    } catch(e) {
+      console.error("Daemon: Error handling message:", e);
     }
   });
 
