@@ -17,8 +17,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Structural and Component Redesign' (Protocol in workflow.md)
 
 ## Phase 3: Verification and Accessibility
-- [ ] Task: Validate Accessibility and Contrast
-    - [ ] **Verify:** Perform a manual audit of color contrast in both Light and Dark modes.
-- [ ] Task: Verify Full Handoff Functionality
-    - [ ] **Verify:** Run `npm test` to ensure visual changes haven't introduced functional regressions.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Verification and Accessibility' (Protocol in workflow.md)
+- [x] Task: Validate Accessibility and Contrast
+    - [x] **Verify:** Perform a manual audit of color contrast in both Light and Dark modes.
+- [x] Task: Verify Full Handoff Functionality
+    - [x] **Verify:** Run `npm test` to ensure visual changes haven't introduced functional regressions.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Verification and Accessibility' (Protocol in workflow.md)
