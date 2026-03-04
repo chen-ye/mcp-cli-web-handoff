@@ -10,21 +10,21 @@
 - [x] f5c8061 Task: Conductor - User Manual Verification 'Phase 1: Tooling and Root Orchestration' (Protocol in workflow.md)
 
 ## Phase 2: Chrome Extension TypeScript Migration
-- [ ] Task: Setup TypeScript for Chrome Extension
-    - [ ] **Implement:** Add `tsconfig.json` to `chrome-extension/`.
-    - [ ] **Implement:** Update root `package.json` workspaces to include `chrome-extension`.
-- [ ] Task: Convert `background.js` to `.ts`
-    - [ ] **Write Tests:** Ensure unit tests for background logic exist and pass.
-    - [ ] **Implement:** Rename to `background.ts`, add types, and fix any compiler errors.
-- [ ] Task: Convert `content.js` to `.ts`
-    - [ ] **Write Tests:** Ensure content script logic is covered by tests.
-    - [ ] **Implement:** Rename to `content.ts`, add types, and fix errors.
-- [ ] Task: Convert `sidepanel.js` to `.ts`
-    - [ ] **Write Tests:** Ensure sidepanel logic is covered by unit tests.
-    - [ ] **Implement:** Rename to `sidepanel.ts`, add types, and fix errors.
-- [ ] Task: Update Build Pipeline for Extension
-    - [ ] **Implement:** Add a build step (e.g., `tsc` or `biome`) to compile TS files to JS for the browser.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension TypeScript Migration' (Protocol in workflow.md)
+- [x] 0f77adb Task: Setup TypeScript for Chrome Extension
+    - [x] **Implement:** Add `tsconfig.json` to `chrome-extension/`.
+    - [x] **Implement:** Update root `package.json` workspaces to include `chrome-extension`.
+- [x] 33cd458 Task: Convert `background.js` to `.ts`
+    - [x] **Write Tests:** Ensure unit tests for background logic exist and pass.
+    - [x] **Implement:** Rename to `background.ts`, add types, and fix any compiler errors.
+- [x] f6a8537 Task: Convert `content.js` to `.ts`
+    - [x] **Write Tests:** Ensure content script logic is covered by tests.
+    - [x] **Implement:** Rename to `content.ts`, add types, and fix errors.
+- [x] 6a5cd6e Task: Convert `sidepanel.js` to `.ts`
+    - [x] **Write Tests:** Ensure sidepanel logic is covered by unit tests.
+    - [x] **Implement:** Rename to `sidepanel.ts`, add types, and fix errors.
+- [x] 95d7fd2 Task: Update Build Pipeline for Extension
+    - [x] **Implement:** Add a build step (e.g., `tsc` or `biome`) to compile TS files to JS for the browser.
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension TypeScript Migration' (Protocol in workflow.md)
 
 ## Phase 3: Accessibility and UI Audit
 - [ ] Task: Conduct Accessibility Audit
