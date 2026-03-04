@@ -1,4 +1,4 @@
-name: End-to-End Tests
+name: CI
 on:
   push:
     branches: [ main, master ]
@@ -17,11 +17,20 @@ jobs:
       run: npm install --legacy-peer-deps
     - name: Install mcp-cli
       run: npm install -g @wong2/mcp-cli
+    - name: Biome Check
+      run: npm run check
+    - name: Build All
+      run: npm run build
+    - name: Unit Tests & Coverage
+      run: npm run test:unit
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage/
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
-    - name: Build MCP Server
-      run: npm run build --workspace=mcp-server
-    - name: Run Playwright tests
+    - name: End-to-End Tests
       run: npm run test:e2e
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
