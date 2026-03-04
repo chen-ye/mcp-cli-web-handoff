@@ -9,7 +9,7 @@
     - [x] **Implement:** Update root `package.json` to orchestrate `test:unit`, `test:e2e`, and `build` across all workspaces using `--workspaces`.
 - [x] f5c8061 Task: Conductor - User Manual Verification 'Phase 1: Tooling and Root Orchestration' (Protocol in workflow.md)
 
-## Phase 2: Chrome Extension TypeScript Migration
+## Phase 2: Chrome Extension TypeScript Migration [checkpoint: 6ac8d77]
 - [x] 0f77adb Task: Setup TypeScript for Chrome Extension
     - [x] **Implement:** Add `tsconfig.json` to `chrome-extension/`.
     - [x] **Implement:** Update root `package.json` workspaces to include `chrome-extension`.
@@ -24,7 +24,7 @@
     - [x] **Implement:** Rename to `sidepanel.ts`, add types, and fix errors.
 - [x] 95d7fd2 Task: Update Build Pipeline for Extension
     - [x] **Implement:** Add a build step (e.g., `tsc` or `biome`) to compile TS files to JS for the browser.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension TypeScript Migration' (Protocol in workflow.md)
+- [x] 6ac8d77 Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension TypeScript Migration' (Protocol in workflow.md)
 
 ## Phase 3: Accessibility and UI Audit
 - [ ] Task: Conduct Accessibility Audit
