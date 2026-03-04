@@ -1,10 +1,10 @@
 # Implementation Plan: Chrome Extension Code Coverage
 
-## Phase 1: Organize Coverage Directory Structure
+## Phase 1: Organize Coverage Directory Structure [checkpoint: 7c47182]
 - [x] Task: Reconfigure MCP Server Coverage
     - [x] **Implement:** Update the root `package.json` `test:unit` and `coverage` scripts to output `c8` reports to `coverage/mcp-server/` instead of the root `coverage/` directory.
     - [x] **Implement:** Update `.gitignore` if necessary to ensure the new folder structure is ignored.
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Organize Coverage Directory Structure' (Protocol in workflow.md)
+- [x] 7c47182 Task: Conductor - User Manual Verification 'Phase 1: Organize Coverage Directory Structure' (Protocol in workflow.md)
 
 ## Phase 2: Chrome Extension V8 Coverage
 - [ ] Task: Setup Playwright Coverage Reporter
