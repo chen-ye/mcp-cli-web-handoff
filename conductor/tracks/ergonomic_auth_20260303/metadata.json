@@ -1,0 +1,8 @@
+{
+  "track_id": "ergonomic_auth_20260303",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-03T20:30:00Z",
+  "updated_at": "2026-03-03T20:30:00Z",
+  "description": "can we make authentication between extension and daemon more ergnomic?"
+}
