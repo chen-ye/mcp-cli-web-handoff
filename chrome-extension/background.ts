@@ -22,7 +22,7 @@ function stopKeepAlive() {
 
 function connect() {
   chrome.storage.local.get(['token'], (result) => {
-    const token = result.token as string | undefined;
+    const token = result['token'] as string | undefined;
     if (!token) {
       console.log(
         'No token found in storage. Awaiting user input in side panel.',
@@ -123,7 +123,7 @@ connect();
 
 // Listen for token updates from side panel
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local' && changes.token) {
+  if (area === 'local' && changes['token']) {
     console.log('Token updated, reconnecting...');
     if (socket) socket.close();
     connect();

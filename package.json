@@ -9,8 +9,9 @@
     "format": "biome format --write .",
     "check": "biome check --write .",
     "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "npx playwright test tests/unit",
-    "test:e2e": "node tests/e2e/setup-test-extension.js && npx playwright test tests/e2e/handoff.spec.ts -c tests/e2e/playwright.config.ts"
+    "test:unit": "c8 --reporter=text --reporter=lcov npx playwright test tests/unit",
+    "test:e2e": "node tests/e2e/setup-test-extension.js && npx playwright test tests/e2e/handoff.spec.ts -c tests/e2e/playwright.config.ts",
+    "coverage": "c8 report --reporter=text"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
     "@biomejs/biome": "2.4.5",
     "@playwright/test": "^1.58.2",
     "@types/sinon": "^21.0.0",
+    "c8": "^11.0.0",
     "puppeteer": "^24.37.5",
     "sinon": "^21.0.1"
   }
