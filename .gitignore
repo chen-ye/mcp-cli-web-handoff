@@ -8,6 +8,7 @@ build/
 mcp-server/dist/
 
 # Test artifacts
+coverage/
 mcp-server/coverage/
 test-results/
 playwright-report/
