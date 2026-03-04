@@ -1,0 +1,8 @@
+{
+  "track_id": "ui_redesign_20260303",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-03T20:00:00Z",
+  "updated_at": "2026-03-03T20:00:00Z",
+  "description": "change the sidepanel styling from the hacker green thing to something that aligns with chrome + gemini styling"
+}
