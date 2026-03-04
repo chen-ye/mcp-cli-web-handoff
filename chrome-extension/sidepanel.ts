@@ -2,7 +2,9 @@
 
 const statusDot = document.getElementById('status-dot') as HTMLDivElement;
 const statusText = document.getElementById('status-text') as HTMLSpanElement;
-const promptDisplay = document.getElementById('prompt-display') as HTMLDivElement;
+const promptDisplay = document.getElementById(
+  'prompt-display',
+) as HTMLDivElement;
 const copyPromptBtn = document.getElementById(
   'copy-prompt-btn',
 ) as HTMLButtonElement;
@@ -12,7 +14,9 @@ const copyProjectPathBtn = document.getElementById(
 const copyContextBtn = document.getElementById(
   'copy-context-btn',
 ) as HTMLButtonElement;
-const webResponse = document.getElementById('web-response') as HTMLTextAreaElement;
+const webResponse = document.getElementById(
+  'web-response',
+) as HTMLTextAreaElement;
 const submitResponseBtn = document.getElementById(
   'submit-response-btn',
 ) as HTMLButtonElement;
@@ -36,18 +40,18 @@ chrome.storage.local.get(
     'connected',
   ],
   (result) => {
-    if (result['token']) {
-      tokenInput.value = result['token'];
+    if (result.token) {
+      tokenInput.value = result.token;
     }
-    if (result['pendingPrompt']) {
+    if (result.pendingPrompt) {
       updatePayloadUI({
-        prompt: result['pendingPrompt'],
-        projectPath: result['projectPath'],
-        zipData: result['zipData'],
-        handoff_id: result['handoffId'],
+        prompt: result.pendingPrompt,
+        projectPath: result.projectPath,
+        zipData: result.zipData,
+        handoff_id: result.handoffId,
       });
     }
-    updateConnectionStatus(result['connected'] || false);
+    updateConnectionStatus(result.connected || false);
   },
 );
 

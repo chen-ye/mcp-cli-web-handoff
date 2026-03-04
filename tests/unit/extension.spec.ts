@@ -3,11 +3,11 @@ import path from 'node:path';
 import { expect, test } from '@playwright/test';
 
 const SIDE_PANEL_JS = fs.readFileSync(
-  path.resolve(__dirname, '../../chrome-extension/sidepanel.js'),
+  path.resolve(__dirname, '../../chrome-extension/dist/sidepanel.js'),
   'utf8',
 );
 const BACKGROUND_JS = fs.readFileSync(
-  path.resolve(__dirname, '../../chrome-extension/background.js'),
+  path.resolve(__dirname, '../../chrome-extension/dist/background.js'),
   'utf8',
 );
 
