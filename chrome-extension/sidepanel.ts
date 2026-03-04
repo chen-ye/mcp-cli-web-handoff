@@ -1,19 +1,29 @@
 // Side Panel UI Logic
 
-const statusDot = document.getElementById('status-dot');
-const statusText = document.getElementById('status-text');
-const promptDisplay = document.getElementById('prompt-display');
-const copyPromptBtn = document.getElementById('copy-prompt-btn');
-const copyProjectPathBtn = document.getElementById('copy-project-path-btn');
-const copyContextBtn = document.getElementById('copy-context-btn');
-const webResponse = document.getElementById('web-response');
-const submitResponseBtn = document.getElementById('submit-response-btn');
-const tokenInput = document.getElementById('token-input');
-const saveTokenBtn = document.getElementById('save-token-btn');
+const statusDot = document.getElementById('status-dot') as HTMLDivElement;
+const statusText = document.getElementById('status-text') as HTMLSpanElement;
+const promptDisplay = document.getElementById('prompt-display') as HTMLDivElement;
+const copyPromptBtn = document.getElementById(
+  'copy-prompt-btn',
+) as HTMLButtonElement;
+const copyProjectPathBtn = document.getElementById(
+  'copy-project-path-btn',
+) as HTMLButtonElement;
+const copyContextBtn = document.getElementById(
+  'copy-context-btn',
+) as HTMLButtonElement;
+const webResponse = document.getElementById('web-response') as HTMLTextAreaElement;
+const submitResponseBtn = document.getElementById(
+  'submit-response-btn',
+) as HTMLButtonElement;
+const tokenInput = document.getElementById('token-input') as HTMLInputElement;
+const saveTokenBtn = document.getElementById(
+  'save-token-btn',
+) as HTMLButtonElement;
 
-let currentProjectPath = null;
-let currentZipData = null;
-let currentHandoffId = null;
+let currentProjectPath: string | null = null;
+let currentZipData: string | null = null;
+let currentHandoffId: string | null = null;
 
 // Initialize UI from storage
 chrome.storage.local.get(
@@ -26,22 +36,22 @@ chrome.storage.local.get(
     'connected',
   ],
   (result) => {
-    if (result.token) {
-      tokenInput.value = result.token;
+    if (result['token']) {
+      tokenInput.value = result['token'];
     }
-    if (result.pendingPrompt) {
+    if (result['pendingPrompt']) {
       updatePayloadUI({
-        prompt: result.pendingPrompt,
-        projectPath: result.projectPath,
-        zipData: result.zipData,
-        handoff_id: result.handoffId,
+        prompt: result['pendingPrompt'],
+        projectPath: result['projectPath'],
+        zipData: result['zipData'],
+        handoff_id: result['handoffId'],
       });
     }
-    updateConnectionStatus(result.connected || false);
+    updateConnectionStatus(result['connected'] || false);
   },
 );
 
-function updateConnectionStatus(connected) {
+function updateConnectionStatus(connected: boolean) {
   if (connected) {
     statusDot.classList.add('connected');
     statusText.textContent = 'Connected';
@@ -51,17 +61,24 @@ function updateConnectionStatus(connected) {
   }
 }
 
-function updatePayloadUI(payload) {
+interface Payload {
+  prompt?: string;
+  projectPath?: string;
+  zipData?: string;
+  handoff_id?: string;
+}
+
+function updatePayloadUI(payload: Payload) {
   promptDisplay.textContent = payload.prompt || '';
   copyPromptBtn.disabled = !payload.prompt;
 
-  currentProjectPath = payload.projectPath;
+  currentProjectPath = payload.projectPath || null;
   copyProjectPathBtn.disabled = !currentProjectPath;
 
-  currentZipData = payload.zipData;
+  currentZipData = payload.zipData || null;
   copyContextBtn.disabled = !currentZipData;
 
-  currentHandoffId = payload.handoff_id;
+  currentHandoffId = payload.handoff_id || null;
 }
 
 // Handle messages from background worker
@@ -84,7 +101,7 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 // Helper for copy buttons
-async function handleCopy(btn, action) {
+async function handleCopy(btn: HTMLButtonElement, action: () => Promise<void>) {
   const originalText = btn.textContent;
   try {
     await action();
@@ -110,13 +127,13 @@ copyPromptBtn.addEventListener('click', () => {
 copyProjectPathBtn.addEventListener('click', () => {
   if (currentProjectPath) {
     handleCopy(copyProjectPathBtn, () =>
-      navigator.clipboard.writeText(currentProjectPath),
+      navigator.clipboard.writeText(currentProjectPath as string),
     );
   }
 });
 
 // Copy Context ZIP to Clipboard
-function base64ToBlob(base64, mime) {
+function base64ToBlob(base64: string, mime: string) {
   const byteCharacters = atob(base64);
   const byteNumbers = new Array(byteCharacters.length);
   for (let i = 0; i < byteCharacters.length; i++) {
@@ -129,7 +146,7 @@ function base64ToBlob(base64, mime) {
 copyContextBtn.addEventListener('click', () => {
   if (currentZipData) {
     handleCopy(copyContextBtn, async () => {
-      const blob = base64ToBlob(currentZipData, 'application/zip');
+      const blob = base64ToBlob(currentZipData as string, 'application/zip');
       const item = new ClipboardItem({ 'application/zip': blob });
       await navigator.clipboard.write([item]);
     });
