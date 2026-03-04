@@ -41,17 +41,17 @@ chrome.storage.local.get(
   ],
   (result) => {
     if (result['token']) {
-      tokenInput.value = result['token'];
+      tokenInput.value = result['token'] as string;
     }
     if (result['pendingPrompt']) {
       updatePayloadUI({
-        prompt: result['pendingPrompt'],
-        projectPath: result['projectPath'],
-        zipData: result['zipData'],
-        handoff_id: result['handoffId'],
+        prompt: result['pendingPrompt'] as string,
+        projectPath: result['projectPath'] as string,
+        zipData: result['zipData'] as string,
+        handoff_id: result['handoffId'] as string,
       });
     }
-    updateConnectionStatus(result['connected'] || false);
+    updateConnectionStatus((result['connected'] as boolean) || false);
   },
 );
 

@@ -59,6 +59,10 @@ export function ensureDaemonRunning(
         '.gemini',
         'web-handoff-daemon.log',
       );
+      
+      // Ensure directory exists before opening log file
+      fs.mkdirSync(path.dirname(logPath), { recursive: true });
+      
       const out = fs.openSync(logPath, 'a');
       const err = fs.openSync(logPath, 'a');
 

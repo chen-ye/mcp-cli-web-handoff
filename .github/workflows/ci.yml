@@ -21,6 +21,8 @@ jobs:
       run: npm run check
     - name: Build All
       run: npm run build
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps chromium
     - name: Unit Tests & Coverage
       run: npm run test:unit
     - name: Upload Coverage Report
