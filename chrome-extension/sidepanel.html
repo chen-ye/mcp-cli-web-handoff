@@ -9,7 +9,7 @@
 <body>
   <header class="header">
     <h1>Web Handoff</h1>
-    <div class="status-indicator">
+    <div class="status-indicator" role="status" aria-live="polite">
       <div id="status-dot" class="status-dot"></div>
       <span id="status-text">Disconnected</span>
     </div>
@@ -17,9 +17,9 @@
 
   <main class="content">
     <!-- CLI to Web Section -->
-    <section class="section">
-      <h2 class="section-label">Pending Prompt</h2>
-      <div id="prompt-display" class="display-area"></div>
+    <section class="section" aria-labelledby="pending-prompt-label">
+      <h2 id="pending-prompt-label" class="section-label">Pending Prompt</h2>
+      <div id="prompt-display" class="display-area" aria-readonly="true"></div>
       <div class="btn-group">
         <button type="button" id="copy-prompt-btn" disabled>
           <span>Copy Prompt</span>
@@ -34,19 +34,19 @@
     </section>
 
     <!-- Web to CLI Section -->
-    <section class="section">
-      <h2 class="section-label">Return Response</h2>
-      <textarea id="web-response" class="input-field" placeholder="Paste response from Gemini here..."></textarea>
+    <section class="section" aria-labelledby="return-response-label">
+      <h2 id="return-response-label" class="section-label">Return Response</h2>
+      <textarea id="web-response" class="input-field" placeholder="Paste response from Gemini here..." aria-labelledby="return-response-label"></textarea>
       <button type="button" id="submit-response-btn" class="primary-btn" disabled>
         Submit to CLI
       </button>
     </section>
   </main>
 
-  <footer class="footer">
-    <h2 class="section-label">Security</h2>
+  <footer class="footer" aria-labelledby="security-label">
+    <h2 id="security-label" class="section-label">Security</h2>
     <div class="token-input-group">
-      <input type="password" id="token-input" class="token-input" placeholder="Enter daemon token...">
+      <input type="password" id="token-input" class="token-input" placeholder="Enter daemon token..." aria-label="Enter daemon token">
       <button type="button" id="save-token-btn">Save</button>
     </div>
   </footer>

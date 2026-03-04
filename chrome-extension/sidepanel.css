@@ -3,8 +3,8 @@
   --panel-bg: #141414;
   --accent-color: #00ff41; /* Terminal green */
   --text-primary: #e0e0e0;
-  --text-secondary: #888;
-  --border-color: #333;
+  --text-secondary: #aaaaaa; /* Increased contrast from #888 */
+  --border-color: #444; /* Increased contrast from #333 */
   --input-bg: #1a1a1a;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
@@ -109,7 +109,7 @@ body {
 
 .display-area:empty::before {
   content: "Awaiting input from CLI...";
-  color: #444;
+  color: #666; /* Increased contrast for placeholder */
 }
 
 .btn-group {
@@ -143,6 +143,13 @@ button:hover:not(:disabled) {
 
 button:active:not(:disabled) {
   transform: translateY(1px);
+}
+
+button:focus-visible,
+.input-field:focus-visible,
+.token-input:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
 }
 
 button:disabled {
@@ -228,5 +235,5 @@ button:disabled {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444;
+  background: #666;
 }
