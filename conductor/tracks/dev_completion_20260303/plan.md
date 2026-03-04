@@ -26,13 +26,13 @@
     - [x] **Implement:** Add a build step (e.g., `tsc` or `biome`) to compile TS files to JS for the browser.
 - [x] 6ac8d77 Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension TypeScript Migration' (Protocol in workflow.md)
 
-## Phase 3: Accessibility and UI Audit
+## Phase 3: Accessibility and UI Audit [checkpoint: 39614ec]
 - [x] Task: Conduct Accessibility Audit
     - [x] **Implement:** Use the `web-accessibility` tools to audit `sidepanel.html`.
     - [x] **Implement:** Document all WCAG 2.2 Level AA violations.
 - [x] 23aede0 Task: Fix Accessibility Violations
     - [x] **Implement:** Update HTML/CSS/TS in the Side Panel to resolve all identified issues (ARIs, contrast, labels, etc.).
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Accessibility and UI Audit' (Protocol in workflow.md)
+- [x] 39614ec Task: Conductor - User Manual Verification 'Phase 3: Accessibility and UI Audit' (Protocol in workflow.md)
 
 ## Phase 4: CI/CD and Coverage Finalization
 - [ ] Task: Configure Coverage Reporting
