@@ -7,14 +7,14 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Theme and Foundation Setup' (Protocol in workflow.md)
 
 ## Phase 2: Structural and Component Redesign
-- [ ] Task: Modernize Header and Typography
-    - [ ] **Implement:** Update font-families and header styles to align with modern Chrome/Gemini branding.
-- [ ] Task: Style "Modern Rounded" Components
-    - [ ] **Implement:** Update all button styles to pill-shaped designs with appropriate padding and hover states.
-    - [ ] **Implement:** Redesign textareas and input fields with high border-radius and modern focus rings.
-- [ ] Task: Redesign Prompt Display Area
-    - [ ] **Implement:** Update the display area to use a cleaner, non-terminal aesthetic while maintaining monospace for content.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Structural and Component Redesign' (Protocol in workflow.md)
+- [x] Task: Modernize Header and Typography
+    - [x] **Implement:** Update font-families and header styles to align with modern Chrome/Gemini branding.
+- [x] Task: Style "Modern Rounded" Components
+    - [x] **Implement:** Update all button styles to pill-shaped designs with appropriate padding and hover states.
+    - [x] **Implement:** Redesign textareas and input fields with high border-radius and modern focus rings.
+- [x] Task: Redesign Prompt Display Area
+    - [x] **Implement:** Update the display area to use a cleaner, non-terminal aesthetic while maintaining monospace for content.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Structural and Component Redesign' (Protocol in workflow.md)
 
 ## Phase 3: Verification and Accessibility
 - [ ] Task: Validate Accessibility and Contrast
