@@ -18,7 +18,8 @@
 ## Development & Tooling
 - **npm Workspaces:** Unified project management using npm workspaces to manage dependencies for both the MCP server and the Chrome Extension from a single root.
 - **Git:** Version control for tracking project changes and collaborating with other developers.
-- **ESLint / Prettier:** Linting and formatting tools to maintain code quality and consistency.
+- **Biome:** Unified, high-performance tool for linting and formatting the entire repository.
 - **Playwright:** The unified testing framework for the entire project, used for both high-fidelity end-to-end (E2E) verification and fast unit/component testing.
+- **c8:** Tool for generating and reporting code coverage from Playwright unit tests.
 - **sinon:** A lightweight library for stubs, spies, and mocks in unit tests.
 - **GitHub Actions:** Continuous Integration (CI) platform for automating the execution of tests on every code change.
