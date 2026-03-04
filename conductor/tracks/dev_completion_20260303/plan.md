@@ -35,9 +35,9 @@
 - [x] 39614ec Task: Conductor - User Manual Verification 'Phase 3: Accessibility and UI Audit' (Protocol in workflow.md)
 
 ## Phase 4: CI/CD and Coverage Finalization
-- [ ] Task: Configure Coverage Reporting
-    - [ ] **Implement:** Setup `c8` or `v8` coverage reporting for Playwright unit tests.
-    - [ ] **Verify:** Ensure coverage meets the >80% threshold for all modules.
-- [ ] Task: Update GitHub Actions Pipeline
-    - [ ] **Implement:** Update `e2e.yml` to include Biome checks, Unit tests, and Coverage artifact uploads.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: CI/CD and Coverage Finalization' (Protocol in workflow.md)
+- [x] 9da13b8 Task: Configure Coverage Reporting
+    - [x] **Implement:** Setup `c8` or `v8` coverage reporting for Playwright unit tests.
+    - [x] **Verify:** Ensure coverage meets the >80% threshold for all modules.
+- [x] 708c0d3 Task: Update GitHub Actions Pipeline
+    - [x] **Implement:** Update `e2e.yml` to include Biome checks, Unit tests, and Coverage artifact uploads.
+- [~] Task: Conductor - User Manual Verification 'Phase 4: CI/CD and Coverage Finalization' (Protocol in workflow.md)
