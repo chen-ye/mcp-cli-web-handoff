@@ -27,12 +27,12 @@
 - [x] 6ac8d77 Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension TypeScript Migration' (Protocol in workflow.md)
 
 ## Phase 3: Accessibility and UI Audit
-- [ ] Task: Conduct Accessibility Audit
-    - [ ] **Implement:** Use the `web-accessibility` tools to audit `sidepanel.html`.
-    - [ ] **Implement:** Document all WCAG 2.2 Level AA violations.
-- [ ] Task: Fix Accessibility Violations
-    - [ ] **Implement:** Update HTML/CSS/TS in the Side Panel to resolve all identified issues (ARIs, contrast, labels, etc.).
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Accessibility and UI Audit' (Protocol in workflow.md)
+- [x] Task: Conduct Accessibility Audit
+    - [x] **Implement:** Use the `web-accessibility` tools to audit `sidepanel.html`.
+    - [x] **Implement:** Document all WCAG 2.2 Level AA violations.
+- [x] 23aede0 Task: Fix Accessibility Violations
+    - [x] **Implement:** Update HTML/CSS/TS in the Side Panel to resolve all identified issues (ARIs, contrast, labels, etc.).
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Accessibility and UI Audit' (Protocol in workflow.md)
 
 ## Phase 4: CI/CD and Coverage Finalization
 - [ ] Task: Configure Coverage Reporting
