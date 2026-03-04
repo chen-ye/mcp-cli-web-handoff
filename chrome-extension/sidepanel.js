@@ -16,20 +16,30 @@ let currentZipData = null;
 let currentHandoffId = null;
 
 // Initialize UI from storage
-chrome.storage.local.get(['token', 'pendingPrompt', 'projectPath', 'zipData', 'handoffId', 'connected'], (result) => {
-  if (result.token) {
-    tokenInput.value = result.token;
-  }
-  if (result.pendingPrompt) {
-    updatePayloadUI({
-      prompt: result.pendingPrompt,
-      projectPath: result.projectPath,
-      zipData: result.zipData,
-      handoff_id: result.handoffId
-    });
-  }
-  updateConnectionStatus(result.connected || false);
-});
+chrome.storage.local.get(
+  [
+    'token',
+    'pendingPrompt',
+    'projectPath',
+    'zipData',
+    'handoffId',
+    'connected',
+  ],
+  (result) => {
+    if (result.token) {
+      tokenInput.value = result.token;
+    }
+    if (result.pendingPrompt) {
+      updatePayloadUI({
+        prompt: result.pendingPrompt,
+        projectPath: result.projectPath,
+        zipData: result.zipData,
+        handoff_id: result.handoffId,
+      });
+    }
+    updateConnectionStatus(result.connected || false);
+  },
+);
 
 function updateConnectionStatus(connected) {
   if (connected) {
@@ -44,7 +54,7 @@ function updateConnectionStatus(connected) {
 function updatePayloadUI(payload) {
   promptDisplay.textContent = payload.prompt || '';
   copyPromptBtn.disabled = !payload.prompt;
-  
+
   currentProjectPath = payload.projectPath;
   copyProjectPathBtn.disabled = !currentProjectPath;
 
@@ -57,7 +67,10 @@ function updatePayloadUI(payload) {
 // Handle messages from background worker
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === 'newPayload') {
-    console.log('Sidepanel: Received newPayload with ID:', message.data.handoff_id);
+    console.log(
+      'Sidepanel: Received newPayload with ID:',
+      message.data.handoff_id,
+    );
     updatePayloadUI(message.data);
   } else if (message.type === 'connectionStatus') {
     updateConnectionStatus(message.connected);
@@ -96,7 +109,9 @@ copyPromptBtn.addEventListener('click', () => {
 // Copy Project Path to Clipboard
 copyProjectPathBtn.addEventListener('click', () => {
   if (currentProjectPath) {
-    handleCopy(copyProjectPathBtn, () => navigator.clipboard.writeText(currentProjectPath));
+    handleCopy(copyProjectPathBtn, () =>
+      navigator.clipboard.writeText(currentProjectPath),
+    );
   }
 });
 
@@ -144,23 +159,26 @@ submitResponseBtn.addEventListener('click', () => {
   const response = webResponse.value.trim();
   if (response) {
     // Send response to background to forward to CLI
-    chrome.runtime.sendMessage({ 
-      type: 'webResponse', 
-      data: response,
-      handoffId: currentHandoffId
-    }, (result) => {
-      if (result && result.success) {
-        webResponse.value = '';
-        submitResponseBtn.disabled = true;
-        const originalText = submitResponseBtn.textContent;
-        submitResponseBtn.textContent = 'Submitted!';
-        setTimeout(() => {
-          submitResponseBtn.textContent = originalText;
-          submitResponseBtn.disabled = false;
-        }, 2000);
-      } else {
-        alert('Failed to submit: ' + (result?.error || 'Unknown error'));
-      }
-    });
+    chrome.runtime.sendMessage(
+      {
+        type: 'webResponse',
+        data: response,
+        handoffId: currentHandoffId,
+      },
+      (result) => {
+        if (result?.success) {
+          webResponse.value = '';
+          submitResponseBtn.disabled = true;
+          const originalText = submitResponseBtn.textContent;
+          submitResponseBtn.textContent = 'Submitted!';
+          setTimeout(() => {
+            submitResponseBtn.textContent = originalText;
+            submitResponseBtn.disabled = false;
+          }, 2000);
+        } else {
+          alert(`Failed to submit: ${result?.error || 'Unknown error'}`);
+        }
+      },
+    );
   }
 });

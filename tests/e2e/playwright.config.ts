@@ -1,5 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-import path from 'path';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -13,7 +12,7 @@ export default defineConfig({
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toBeVisible();`
      */
-    timeout: 5000
+    timeout: 5000,
   },
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -34,7 +33,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    
+
     // Extensions only work in Chromium
     browserName: 'chromium',
   },

@@ -1,7 +1,7 @@
 # Implementation Plan: Development Completion and Standardization
 
 ## Phase 1: Tooling and Root Orchestration
-- [ ] Task: Initialize Biome project-wide
+- [~] Task: Initialize Biome project-wide
     - [ ] **Implement:** Install `@biomejs/biome` and create `biome.json` at the root.
     - [ ] **Implement:** Configure linting and formatting rules.
     - [ ] **Implement:** Add `lint`, `format`, and `check` scripts to the root `package.json`.

@@ -21,13 +21,13 @@
       <h2 class="section-label">Pending Prompt</h2>
       <div id="prompt-display" class="display-area"></div>
       <div class="btn-group">
-        <button id="copy-prompt-btn" disabled>
+        <button type="button" id="copy-prompt-btn" disabled>
           <span>Copy Prompt</span>
         </button>
-        <button id="copy-project-path-btn" disabled>
+        <button type="button" id="copy-project-path-btn" disabled>
           <span>Copy Project Path</span>
         </button>
-        <button id="copy-context-btn" disabled>
+        <button type="button" id="copy-context-btn" disabled>
           <span>Copy Context ZIP</span>
         </button>
       </div>
@@ -37,7 +37,7 @@
     <section class="section">
       <h2 class="section-label">Return Response</h2>
       <textarea id="web-response" class="input-field" placeholder="Paste response from Gemini here..."></textarea>
-      <button id="submit-response-btn" class="primary-btn" disabled>
+      <button type="button" id="submit-response-btn" class="primary-btn" disabled>
         Submit to CLI
       </button>
     </section>
@@ -47,7 +47,7 @@
     <h2 class="section-label">Security</h2>
     <div class="token-input-group">
       <input type="password" id="token-input" class="token-input" placeholder="Enter daemon token...">
-      <button id="save-token-btn">Save</button>
+      <button type="button" id="save-token-btn">Save</button>
     </div>
   </footer>
 

@@ -1,14 +1,21 @@
-import { test, expect } from '@playwright/test';
-import path from 'path';
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
+import { expect, test } from '@playwright/test';
 
-const SIDE_PANEL_JS = fs.readFileSync(path.resolve(__dirname, '../../chrome-extension/sidepanel.js'), 'utf8');
-const BACKGROUND_JS = fs.readFileSync(path.resolve(__dirname, '../../chrome-extension/background.js'), 'utf8');
+const SIDE_PANEL_JS = fs.readFileSync(
+  path.resolve(__dirname, '../../chrome-extension/sidepanel.js'),
+  'utf8',
+);
+const BACKGROUND_JS = fs.readFileSync(
+  path.resolve(__dirname, '../../chrome-extension/background.js'),
+  'utf8',
+);
 
 test.describe('Extension Unit Tests', () => {
-  
   test.describe('Side Panel Logic', () => {
-    test('should update UI when receiving a newPayload message', async ({ page }) => {
+    test('should update UI when receiving a newPayload message', async ({
+      page,
+    }) => {
       // 1. Setup mock chrome environment and load sidepanel.js
       await page.setContent(`
         <div id="status-dot"></div>
@@ -25,21 +32,25 @@ test.describe('Extension Unit Tests', () => {
 
       await page.evaluate((script) => {
         // Mock chrome API
+        // biome-ignore lint/suspicious/noExplicitAny: mocking global chrome
         (window as any).chrome = {
           storage: {
             local: {
-              get: (keys, cb) => cb({}),
-              set: (data, cb) => cb && cb(),
-            }
+              get: (_keys, cb) => cb({}),
+              set: (_data, cb) => cb?.(),
+            },
           },
           runtime: {
             onMessage: {
-              addListener: (listener) => { (window as any).messageListener = listener; }
+              addListener: (listener) => {
+                // biome-ignore lint/suspicious/noExplicitAny: mocking listener
+                (window as any).messageListener = listener;
+              },
             },
-            sendMessage: () => {}
-          }
+            sendMessage: () => {},
+          },
         };
-        
+
         // Execute sidepanel.js logic
         const scriptEl = document.createElement('script');
         scriptEl.textContent = script;
@@ -50,64 +61,79 @@ test.describe('Extension Unit Tests', () => {
       const mockPayload = {
         prompt: 'Test Prompt',
         projectPath: '/test/path',
-        zipData: 'mock-zip'
+        zipData: 'mock-zip',
       };
 
       await page.evaluate((payload) => {
+        // biome-ignore lint/suspicious/noExplicitAny: triggering mock listener
         (window as any).messageListener({ type: 'newPayload', data: payload });
       }, mockPayload);
 
       // 3. Assertions
-      const promptText = await page.$eval('#prompt-display', el => el.textContent);
+      const promptText = await page.$eval(
+        '#prompt-display',
+        (el) => el.textContent,
+      );
       expect(promptText).toBe('Test Prompt');
-      
-      const isPromptEnabled = await page.$eval('#copy-prompt-btn', el => !el.disabled);
+
+      const isPromptEnabled = await page.$eval(
+        '#copy-prompt-btn',
+        (el) => !el.disabled,
+      );
       expect(isPromptEnabled).toBe(true);
     });
   });
 
   test.describe('Background Logic', () => {
-    test('should attempt connection when token is available', async ({ page }) => {
+    test('should attempt connection when token is available', async ({
+      page,
+    }) => {
       const mockToken = 'test-token';
-      
-      const logs = await page.evaluate(async ({ script, token }) => {
-        const logs: string[] = [];
-        const originalConsoleLog = console.log;
-        console.log = (...args) => logs.push(args.join(' '));
 
-        // Mock chrome API
-        (window as any).chrome = {
-          storage: {
-            local: {
-              get: (keys, cb) => cb({ token }),
-              set: () => {},
-              onChanged: { addListener: () => {} }
+      const logs = await page.evaluate(
+        // biome-ignore lint/suspicious/useAwait: evaluating in browser
+        async ({ script, token }) => {
+          const logs: string[] = [];
+          const _originalConsoleLog = console.log;
+          console.log = (...args) => logs.push(args.join(' '));
+
+          // Mock chrome API
+          // biome-ignore lint/suspicious/noExplicitAny: mocking global chrome
+          (window as any).chrome = {
+            storage: {
+              local: {
+                get: (_keys, cb) => cb({ token }),
+                set: () => {},
+                onChanged: { addListener: () => {} },
+              },
+            },
+            runtime: {
+              onMessage: { addListener: () => {} },
+              onInstalled: { addListener: () => {} },
+              sendMessage: () => {},
+            },
+            sidePanel: { setPanelBehavior: () => Promise.resolve() },
+          };
+
+          // Mock WebSocket
+          // biome-ignore lint/suspicious/noExplicitAny: mocking global WebSocket
+          (window as any).WebSocket = class {
+            constructor(url) {
+              logs.push(`WebSocket connecting to: ${url}`);
             }
-          },
-          runtime: {
-            onMessage: { addListener: () => {} },
-            onInstalled: { addListener: () => {} },
-            sendMessage: () => {}
-          },
-          sidePanel: { setPanelBehavior: () => Promise.resolve() }
-        };
+          };
 
-        // Mock WebSocket
-        (window as any).WebSocket = class {
-          constructor(url) {
-            logs.push(`WebSocket connecting to: ${url}`);
-          }
-        };
+          // Execute background.js
+          const scriptEl = document.createElement('script');
+          scriptEl.textContent = script;
+          document.body.appendChild(scriptEl);
 
-        // Execute background.js
-        const scriptEl = document.createElement('script');
-        scriptEl.textContent = script;
-        document.body.appendChild(scriptEl);
+          return logs;
+        },
+        { script: BACKGROUND_JS, token: mockToken },
+      );
 
-        return logs;
-      }, { script: BACKGROUND_JS, token: mockToken });
-
-      expect(logs.some(l => l.includes(`token=${mockToken}`))).toBe(true);
+      expect(logs.some((l) => l.includes(`token=${mockToken}`))).toBe(true);
     });
   });
 });
