@@ -9,6 +9,7 @@
 - **Model Context Protocol (MCP) Server SDK:** The official SDK for building MCP servers, allowing for seamless integration with the Gemini CLI.
 - **WebSocket (`ws` library):** A lightweight library for implementing the local WebSocket server within the Node.js MCP server and for managing communication with the browser extension.
 - **adm-zip:** A lightweight library used by the local MCP server to construct in-memory ZIP archives of context files for clipboard transfer.
+- **Istanbul Libraries:** A suite of tools (`v8-to-istanbul`, `istanbul-lib-coverage`, etc.) used to process V8 coverage data from the browser and generate standardized reports for the Chrome Extension.
 
 ## Architecture
 - **Local MCP Server & WebSocket Daemon (Node.js):** A server that exposes specific tools (e.g., `delegate_web_research`) to the Gemini CLI. It automatically spawns a standalone canonical WebSocket daemon to manage secure, token-based authentication and message routing between multiple CLI instances and the browser extension.
