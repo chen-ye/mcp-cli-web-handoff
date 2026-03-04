@@ -6,7 +6,7 @@
     - [x] **Implement:** Define semantic variables for `--surface`, `--text-primary`, `--accent-primary`, etc., for both modes.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Theme and Foundation Setup' (Protocol in workflow.md)
 
-## Phase 2: Structural and Component Redesign
+## Phase 2: Structural and Component Redesign [checkpoint: 383125e]
 - [x] Task: Modernize Header and Typography
     - [x] **Implement:** Update font-families and header styles to align with modern Chrome/Gemini branding.
 - [x] Task: Style "Modern Rounded" Components
