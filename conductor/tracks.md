@@ -8,5 +8,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: set up coverage for the chrome extension**
+- [~] **Track: set up coverage for the chrome extension**
 *Link: [./tracks/extension_coverage_20260304/](./tracks/extension_coverage_20260304/)*
