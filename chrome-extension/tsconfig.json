@@ -25,10 +25,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    },
     "types": ["chrome"]
   },
   "include": ["**/*.ts"],
