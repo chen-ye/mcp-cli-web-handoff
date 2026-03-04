@@ -1,0 +1,8 @@
+{
+  "track_id": "extension_coverage_20260304",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-03-04T00:00:00Z",
+  "updated_at": "2026-03-04T00:00:00Z",
+  "description": "set up coverage for the chrome extension. it does not need to be merged with the coverage report for the mcp server--whatever is most idiomatic"
+}
