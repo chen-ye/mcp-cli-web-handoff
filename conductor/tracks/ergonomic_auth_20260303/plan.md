@@ -9,9 +9,9 @@
     - [x] **Implement:** Call the clipboard utility within `resolveToken` in `mcp-server/src/client.ts`.
 - [~] Task: Conductor - User Manual Verification 'Phase 1: Auto-Copy Token' (Protocol in workflow.md)
 
-## Phase 2: Verification and Refinement
+## Phase 2: Verification and Refinement [checkpoint: 29c5651]
 - [x] Task: Verify extension token persistence
     - [x] **Verify:** Ensure `chrome-extension/background.ts` and `sidepanel.ts` correctly retrieve the token from `chrome.storage.local` on startup. (This may already be working, but needs explicit verification).
 - [x] Task: E2E Verification
     - [x] **Verify:** Run the full E2E test suite to ensure the new auto-copy logic doesn't interfere with existing flows.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Verification and Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Verification and Refinement' (Protocol in workflow.md)
