@@ -14,7 +14,10 @@
     - [x] **Implement:** Update `tests/unit/extension.spec.ts` to call `page.coverage.startJSCoverage()` before tests and `page.coverage.stopJSCregage()` after tests, attaching the raw data to the test results for processing by the collector.
 - [~] Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension V8 Coverage' (Protocol in workflow.md)
 
-## Phase 3: CI/CD Integration
+## Phase 3: CI/CD Integration [checkpoint: 7698a8a]
 - [x] Task: Update GitHub Actions Pipeline
     - [x] **Implement:** Modify `.github/workflows/ci.yml` to upload both `coverage/mcp-server/` and `coverage/chrome-extension/` as CI artifacts.
-- [~] Task: Conductor - User Manual Verification 'Phase 3: CI/CD Integration' (Protocol in workflow.md)
+- [x] 7698a8a Task: Conductor - User Manual Verification 'Phase 3: CI/CD Integration' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] ee43290 Task: Apply review suggestions
