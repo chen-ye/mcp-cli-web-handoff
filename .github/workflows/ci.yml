@@ -23,15 +23,15 @@ jobs:
       run: npm run build
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
-    - name: Unit Tests & Coverage
+    - name: Unit Tests & Coverage (MCP Server)
       run: npm run test:unit
-    - name: Upload Coverage Report
+    - name: Unit Tests & Coverage (Chrome Extension)
+      run: npm run test:extension:coverage
+    - name: Upload Coverage Reports
       uses: actions/upload-artifact@v4
       with:
-        name: coverage-report
+        name: coverage-reports
         path: coverage/
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
     - name: End-to-End Tests
       run: npm run test:e2e
     - uses: actions/upload-artifact@v4

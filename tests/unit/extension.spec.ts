@@ -2,21 +2,40 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
 
-const SIDE_PANEL_JS = fs.readFileSync(
-  path.resolve(__dirname, '../../chrome-extension/dist/sidepanel.js'),
-  'utf8',
-);
-const BACKGROUND_JS = fs.readFileSync(
-  path.resolve(__dirname, '../../chrome-extension/dist/background.js'),
-  'utf8',
-);
+const SIDE_PANEL_JS_PATH = path.resolve(__dirname, '../../chrome-extension/dist/sidepanel.js');
+const SIDE_PANEL_JS = fs.readFileSync(SIDE_PANEL_JS_PATH, 'utf8');
+
+const BACKGROUND_JS_PATH = path.resolve(__dirname, '../../chrome-extension/dist/background.js');
+const BACKGROUND_JS = fs.readFileSync(BACKGROUND_JS_PATH, 'utf8');
 
 test.describe('Extension Unit Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.coverage.startJSCoverage();
+  });
+
+  test.afterEach(async ({ page }, testInfo) => {
+    const coverage = await page.coverage.stopJSCoverage();
+    for (const entry of coverage) {
+      if (entry.url === 'http://extension/sidepanel.js') {
+        entry.source = fs.readFileSync(SIDE_PANEL_JS_PATH, 'utf8');
+      } else if (entry.url === 'http://extension/background.js') {
+        entry.source = fs.readFileSync(BACKGROUND_JS_PATH, 'utf8');
+      }
+    }
+    await testInfo.attach('v8-coverage', {
+      body: JSON.stringify(coverage),
+      contentType: 'application/json',
+    });
+  });
+
   test.describe('Side Panel Logic', () => {
     test('should update UI when receiving a newPayload message', async ({
       page,
     }) => {
-      // 1. Setup mock chrome environment and load sidepanel.js
+      // 1. Setup mock chrome environment and load sidepanel.js with inline sourcemap
+      const sidepanelMap = fs.readFileSync(SIDE_PANEL_JS_PATH + '.map', 'utf8');
+      const sidepanelInline = SIDE_PANEL_JS + `\n//# sourceMappingURL=data:application/json;base64,${Buffer.from(sidepanelMap).toString('base64')}\n//# sourceURL=http://extension/sidepanel.js`;
+
       await page.setContent(`
         <div id="status-dot"></div>
         <div id="status-text"></div>
@@ -36,13 +55,13 @@ test.describe('Extension Unit Tests', () => {
         (window as any).chrome = {
           storage: {
             local: {
-              get: (_keys, cb) => cb({}),
-              set: (_data, cb) => cb?.(),
+              get: (_keys: any, cb: any) => cb({}),
+              set: (_data: any, cb: any) => cb?.(),
             },
           },
           runtime: {
             onMessage: {
-              addListener: (listener) => {
+              addListener: (listener: any) => {
                 // biome-ignore lint/suspicious/noExplicitAny: mocking listener
                 (window as any).messageListener = listener;
               },
@@ -55,7 +74,7 @@ test.describe('Extension Unit Tests', () => {
         const scriptEl = document.createElement('script');
         scriptEl.textContent = script;
         document.body.appendChild(scriptEl);
-      }, SIDE_PANEL_JS);
+      }, sidepanelInline);
 
       // 2. Simulate newPayload message
       const mockPayload = {
@@ -89,6 +108,8 @@ test.describe('Extension Unit Tests', () => {
       page,
     }) => {
       const mockToken = 'test-token';
+      const backgroundMap = fs.readFileSync(BACKGROUND_JS_PATH + '.map', 'utf8');
+      const backgroundInline = BACKGROUND_JS + `\n//# sourceMappingURL=data:application/json;base64,${Buffer.from(backgroundMap).toString('base64')}\n//# sourceURL=http://extension/background.js`;
 
       const logs = await page.evaluate(
         // biome-ignore lint/suspicious/useAwait: evaluating in browser
@@ -102,7 +123,7 @@ test.describe('Extension Unit Tests', () => {
           (window as any).chrome = {
             storage: {
               local: {
-                get: (_keys, cb) => cb({ token }),
+                get: (_keys: any, cb: any) => cb({ token }),
                 set: () => {},
                 onChanged: { addListener: () => {} },
               },
@@ -118,7 +139,7 @@ test.describe('Extension Unit Tests', () => {
           // Mock WebSocket
           // biome-ignore lint/suspicious/noExplicitAny: mocking global WebSocket
           (window as any).WebSocket = class {
-            constructor(url) {
+            constructor(url: string) {
               logs.push(`WebSocket connecting to: ${url}`);
             }
           };
@@ -130,7 +151,7 @@ test.describe('Extension Unit Tests', () => {
 
           return logs;
         },
-        { script: BACKGROUND_JS, token: mockToken },
+        { script: backgroundInline, token: mockToken },
       );
 
       expect(logs.some((l) => l.includes(`token=${mockToken}`))).toBe(true);

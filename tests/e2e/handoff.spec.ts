@@ -25,7 +25,7 @@ test.describe('Gemini-to-Web Handoff E2E (Two-Step Flow)', () => {
     });
   });
 
-  test.beforeEach(async () => {
+  test.beforeEach(async ({ page }) => {
     userDataDir = fs.mkdtempSync(
       path.join(os.tmpdir(), 'playwright-user-data-'),
     );
@@ -42,9 +42,24 @@ test.describe('Gemini-to-Web Handoff E2E (Two-Step Flow)', () => {
         '--enable-extensions',
       ],
     });
+
+    // Start coverage tracking for any page opened in this context
+    context.on('page', async (page) => {
+      await page.coverage.startJSCoverage().catch(() => {});
+    });
   });
 
-  test.afterEach(async () => {
+  test.afterEach(async ({}, testInfo) => {
+    for (const page of context.pages()) {
+      try {
+        const coverage = await page.coverage.stopJSCoverage();
+        await testInfo.attach('v8-coverage', {
+          body: JSON.stringify(coverage),
+          contentType: 'application/json',
+        });
+      } catch (_e) {}
+    }
+
     if (context) {
       await context.close();
     }

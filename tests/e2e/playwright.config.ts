@@ -23,7 +23,21 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    [
+      'monocart-reporter',
+      {
+        name: 'Chrome Extension E2E Coverage',
+        outputFile: '../../coverage/chrome-extension/index.html',
+        coverage: {
+          reports: ['v8', 'html', 'lcov', 'text-summary'],
+          entryFilter: (entry: any) => entry.url.includes('chrome-extension/dist'),
+          sourceFilter: (sourcePath: string) => sourcePath.includes('chrome-extension'),
+        },
+      },
+    ],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
