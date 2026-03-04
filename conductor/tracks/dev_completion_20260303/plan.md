@@ -1,13 +1,13 @@
 # Implementation Plan: Development Completion and Standardization
 
 ## Phase 1: Tooling and Root Orchestration
-- [~] Task: Initialize Biome project-wide
-    - [ ] **Implement:** Install `@biomejs/biome` and create `biome.json` at the root.
-    - [ ] **Implement:** Configure linting and formatting rules.
-    - [ ] **Implement:** Add `lint`, `format`, and `check` scripts to the root `package.json`.
-- [ ] Task: Standardize Root NPM Scripts
-    - [ ] **Implement:** Update root `package.json` to orchestrate `test:unit`, `test:e2e`, and `build` across all workspaces using `--workspaces`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Tooling and Root Orchestration' (Protocol in workflow.md)
+- [x] abf2a0d Task: Initialize Biome project-wide
+    - [x] **Implement:** Install `@biomejs/biome` and create `biome.json` at the root.
+    - [x] **Implement:** Configure linting and formatting rules.
+    - [x] **Implement:** Add `lint`, `format`, and `check` scripts to the root `package.json`.
+- [x] 93a9817 Task: Standardize Root NPM Scripts
+    - [x] **Implement:** Update root `package.json` to orchestrate `test:unit`, `test:e2e`, and `build` across all workspaces using `--workspaces`.
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Tooling and Root Orchestration' (Protocol in workflow.md)
 
 ## Phase 2: Chrome Extension TypeScript Migration
 - [ ] Task: Setup TypeScript for Chrome Extension
