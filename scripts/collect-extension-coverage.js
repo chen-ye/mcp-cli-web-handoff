@@ -10,11 +10,14 @@ async function collect() {
   console.log('Running extension unit tests to collect V8 coverage...');
   
   // 1. Run playwright tests and output to a JSON file
+  // Wrap with c8 to get MCP server coverage at the same time
   const reportPath = 'coverage/chrome-extension/playwright-report.json';
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   
   try {
-    execSync(`npx playwright test tests/unit --reporter=json > ${reportPath}`, { stdio: 'inherit' });
+    const cmd = `c8 --reports-dir=coverage/mcp-server --reporter=lcov npx playwright test tests/unit --reporter=json > ${reportPath}`;
+    console.log(`Executing: ${cmd}`);
+    execSync(cmd, { stdio: 'inherit' });
   } catch (e) {
     // Playwright might exit with non-zero if tests fail, but we still want coverage
   }
@@ -82,7 +85,10 @@ async function collect() {
   reports.create('lcovonly', { file: 'lcov.info' }).execute(context);
   reports.create('text-summary').execute(context);
 
-  console.log('Chrome Extension coverage reports generated in coverage/chrome-extension/');
+  console.log('\nMCP Server (Node.js) Coverage Summary:');
+  execSync('c8 report --reports-dir=coverage/mcp-server --reporter=text', { stdio: 'inherit' });
+
+  console.log('\nChrome Extension coverage reports generated in coverage/chrome-extension/');
 
   // 4. Enforce 80% threshold
   const summary = coverageMap.getCoverageSummary();

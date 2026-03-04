@@ -9,10 +9,10 @@
     "format": "biome format --write .",
     "check": "biome check --write .",
     "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "c8 --reports-dir=coverage/mcp-server --reporter=text --reporter=lcov npx playwright test tests/unit",
+    "test:unit": "npx playwright test tests/unit",
     "test:extension:coverage": "node scripts/collect-extension-coverage.js",
     "test:e2e": "node tests/e2e/setup-test-extension.js && npx playwright test tests/e2e/handoff.spec.ts -c tests/e2e/playwright.config.ts",
-    "coverage": "npm run test:unit && npm run test:extension:coverage"
+    "coverage": "npm run test:extension:coverage"
   },
   "keywords": [],
   "author": "",
