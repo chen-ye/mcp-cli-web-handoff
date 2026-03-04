@@ -1,10 +1,10 @@
 # Implementation Plan: Side Panel UI Redesign
 
 ## Phase 1: Theme and Foundation Setup
-- [ ] Task: Define Adaptive CSS Variable System
-    - [ ] **Implement:** Update `sidepanel.css` root variables to support `prefers-color-scheme`.
-    - [ ] **Implement:** Define semantic variables for `--surface`, `--text-primary`, `--accent-primary`, etc., for both modes.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Theme and Foundation Setup' (Protocol in workflow.md)
+- [x] Task: Define Adaptive CSS Variable System
+    - [x] **Implement:** Update `sidepanel.css` root variables to support `prefers-color-scheme`.
+    - [x] **Implement:** Define semantic variables for `--surface`, `--text-primary`, `--accent-primary`, etc., for both modes.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Theme and Foundation Setup' (Protocol in workflow.md)
 
 ## Phase 2: Structural and Component Redesign
 - [ ] Task: Modernize Header and Typography

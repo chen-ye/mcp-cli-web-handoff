@@ -1,8 +1,0 @@
-{
-  "track_id": "dev_completion_20260303",
-  "type": "chore",
-  "status": "new",
-  "created_at": "2026-03-03T19:40:00Z",
-  "updated_at": "2026-03-03T19:40:00Z",
-  "description": "Reach development completion by standardizing tooling (Biome), converting the extension to TypeScript, ensuring >80% code coverage, and fixing accessibility violations."
-}

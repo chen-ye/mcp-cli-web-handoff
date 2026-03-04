@@ -8,5 +8,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Change sidepanel styling to align with Chrome + Gemini**
+- [~] **Track: Change sidepanel styling to align with Chrome + Gemini**
 *Link: [./tracks/ui_redesign_20260303/](./tracks/ui_redesign_20260303/)*
