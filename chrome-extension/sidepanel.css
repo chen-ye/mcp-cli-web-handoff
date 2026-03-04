@@ -12,7 +12,7 @@
   --input-bg: #f1f3f4;
   --error-color: #d93025;
   --success-color: #1e8e3e;
-  
+
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
   --font-sans: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);

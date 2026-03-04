@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 import sinon from 'sinon';
 import {
   type ClientDependencies,
+  copyToClipboard,
   ensureDaemonRunning,
   sendPayloadToDaemon,
   waitForResult,
@@ -23,12 +24,52 @@ test.describe('mcp-client unit tests', () => {
       WebSocket: sinon.stub().returns(mockWs) as any,
       // biome-ignore lint/suspicious/noExplicitAny: mocking child process
       spawn: sinon.stub().returns({ unref: sinon.stub() }) as any,
+      execSync: sinon.stub(),
       readFileSync: sinon.stub().returns('mock-token'),
     };
   });
 
+  test.describe('copyToClipboard', () => {
+    test('should use pbcopy on darwin', () => {
+      const originalPlatform = process.platform;
+      Object.defineProperty(process, 'platform', { value: 'darwin' });
+      copyToClipboard('test-token', deps);
+      expect(
+        (deps.execSync as sinon.SinonStub).calledWith('pbcopy', {
+          input: 'test-token',
+        }),
+      ).toBe(true);
+      Object.defineProperty(process, 'platform', { value: originalPlatform });
+    });
+
+    test('should use clip on win32', () => {
+      const originalPlatform = process.platform;
+      Object.defineProperty(process, 'platform', { value: 'win32' });
+      copyToClipboard('test-token', deps);
+      expect(
+        (deps.execSync as sinon.SinonStub).calledWith('clip', {
+          input: 'test-token',
+        }),
+      ).toBe(true);
+      Object.defineProperty(process, 'platform', { value: originalPlatform });
+    });
+
+    test('should use xclip on linux', () => {
+      const originalPlatform = process.platform;
+      Object.defineProperty(process, 'platform', { value: 'linux' });
+      copyToClipboard('test-token', deps);
+      expect(
+        (deps.execSync as sinon.SinonStub).calledWith(
+          'xclip -selection clipboard',
+          { input: 'test-token' },
+        ),
+      ).toBe(true);
+      Object.defineProperty(process, 'platform', { value: originalPlatform });
+    });
+  });
+
   test.describe('ensureDaemonRunning', () => {
-    test('should resolve token if daemon is already running', async () => {
+    test('should resolve token and copy to clipboard if daemon is already running', async () => {
       const promise = ensureDaemonRunning(deps);
 
       // Simulate connection success
@@ -37,9 +78,10 @@ test.describe('mcp-client unit tests', () => {
       const token = await promise;
       expect(token).toBe('mock-token');
       expect(mockWs.close.calledOnce).toBe(true);
+      expect((deps.execSync as sinon.SinonStub).called).toBe(true);
     });
 
-    test('should spawn daemon if connection is refused', async () => {
+    test('should spawn daemon, resolve token, and copy to clipboard if connection is refused', async () => {
       const promise = ensureDaemonRunning(deps);
 
       // Simulate connection failure
@@ -51,6 +93,7 @@ test.describe('mcp-client unit tests', () => {
       const spawnStub = deps.spawn as sinon.SinonStub;
       expect(spawnStub.calledOnce).toBe(true);
       expect(spawnStub.getCall(0).args[2].stdio).not.toEqual('ignore');
+      expect((deps.execSync as sinon.SinonStub).called).toBe(true);
     });
   });
 

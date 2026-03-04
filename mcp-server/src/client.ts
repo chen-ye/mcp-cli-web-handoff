@@ -10,14 +10,39 @@ const TOKEN_FILE_PATH = path.join(os.homedir(), '.gemini', 'web-handoff-token');
 export interface ClientDependencies {
   WebSocket: typeof WebSocket;
   spawn: typeof cp.spawn;
+  execSync: typeof cp.execSync;
   readFileSync: typeof fs.readFileSync;
 }
 
 const defaultDeps: ClientDependencies = {
   WebSocket,
   spawn: cp.spawn,
+  execSync: cp.execSync,
   readFileSync: fs.readFileSync,
 };
+
+export function copyToClipboard(
+  text: string,
+  deps: ClientDependencies = defaultDeps,
+) {
+  try {
+    if (process.platform === 'darwin') {
+      deps.execSync('pbcopy', { input: text });
+    } else if (process.platform === 'win32') {
+      deps.execSync('clip', { input: text });
+    } else {
+      // Assuming Linux/X11
+      try {
+        deps.execSync('xclip -selection clipboard', { input: text });
+      } catch (_e) {
+        // Fallback to xsel if xclip is not available
+        deps.execSync('xsel --clipboard --input', { input: text });
+      }
+    }
+  } catch (error) {
+    console.error('Failed to copy to clipboard:', error);
+  }
+}
 
 export function ensureDaemonRunning(
   deps: ClientDependencies = defaultDeps,
@@ -44,6 +69,8 @@ export function ensureDaemonRunning(
     function resolveToken() {
       try {
         const token = deps.readFileSync(TOKEN_FILE_PATH, 'utf-8');
+        copyToClipboard(token, deps);
+        console.log('Daemon token copied to clipboard.');
         resolve(token);
       } catch (_e) {
         reject(
@@ -59,10 +86,10 @@ export function ensureDaemonRunning(
         '.gemini',
         'web-handoff-daemon.log',
       );
-      
+
       // Ensure directory exists before opening log file
       fs.mkdirSync(path.dirname(logPath), { recursive: true });
-      
+
       const out = fs.openSync(logPath, 'a');
       const err = fs.openSync(logPath, 'a');
 

@@ -142,4 +142,69 @@ test.describe('Gemini-to-Web Handoff E2E (Two-Step Flow)', () => {
       btn?.remove();
     });
   });
+
+  test('should persist token across browser restarts', async () => {
+    // 1. Initial setup to start daemon and get a token
+    const setup = spawnTool('delegate_web_research', {
+      prompt: 'Persistence setup',
+    });
+    const tokenPath = path.join(os.homedir(), '.gemini', 'web-handoff-token');
+
+    // Wait for token file to be created
+    for (let i = 0; i < 20 && !fs.existsSync(tokenPath); i++) {
+      await new Promise((r) => setTimeout(r, 500));
+    }
+    const token = fs.readFileSync(tokenPath, 'utf8').trim();
+
+    // 2. Open side panel and save token
+    const sidePanelPage = await context.newPage();
+    await sidePanelPage.goto(
+      `chrome-extension://${extensionId}/sidepanel.html`,
+    );
+    await sidePanelPage.locator('#token-input').fill(token);
+    await sidePanelPage.locator('#save-token-btn').click();
+
+    // Ensure connection is established
+    await expect(sidePanelPage.locator('#status-dot')).toHaveClass(
+      /connected/,
+      { timeout: 10000 },
+    );
+
+    // Clean up setup process
+    await sidePanelPage.locator('#web-response').fill('done');
+    await sidePanelPage.locator('#submit-response-btn').click();
+    await setup.result;
+
+    // 3. Restart browser (close current context, open a new one with same user data dir)
+    await context.close();
+    context = await chromium.launchPersistentContext(userDataDir, {
+      headless: false,
+      args: [
+        '--headless',
+        `--disable-extensions-except=${EXTENSION_PATH}`,
+        `--load-extension=${EXTENSION_PATH}`,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--enable-extensions',
+      ],
+    });
+
+    // 4. Re-open side panel and verify it auto-connects without manual input
+    const newSidePanelPage = await context.newPage();
+    await newSidePanelPage.goto(
+      `chrome-extension://${extensionId}/sidepanel.html`,
+    );
+
+    // Wait a moment for background script to initialize and connect
+    await new Promise((r) => setTimeout(r, 1000));
+
+    // Verify the token input field has the token populated
+    await expect(newSidePanelPage.locator('#token-input')).toHaveValue(token);
+
+    // Verify it successfully connected using the persisted token
+    await expect(newSidePanelPage.locator('#status-dot')).toHaveClass(
+      /connected/,
+      { timeout: 10000 },
+    );
+  });
 });
