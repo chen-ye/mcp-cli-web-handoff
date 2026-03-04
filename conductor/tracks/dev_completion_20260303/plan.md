@@ -1,0 +1,43 @@
+# Implementation Plan: Development Completion and Standardization
+
+## Phase 1: Tooling and Root Orchestration
+- [ ] Task: Initialize Biome project-wide
+    - [ ] **Implement:** Install `@biomejs/biome` and create `biome.json` at the root.
+    - [ ] **Implement:** Configure linting and formatting rules.
+    - [ ] **Implement:** Add `lint`, `format`, and `check` scripts to the root `package.json`.
+- [ ] Task: Standardize Root NPM Scripts
+    - [ ] **Implement:** Update root `package.json` to orchestrate `test:unit`, `test:e2e`, and `build` across all workspaces using `--workspaces`.
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Tooling and Root Orchestration' (Protocol in workflow.md)
+
+## Phase 2: Chrome Extension TypeScript Migration
+- [ ] Task: Setup TypeScript for Chrome Extension
+    - [ ] **Implement:** Add `tsconfig.json` to `chrome-extension/`.
+    - [ ] **Implement:** Update root `package.json` workspaces to include `chrome-extension`.
+- [ ] Task: Convert `background.js` to `.ts`
+    - [ ] **Write Tests:** Ensure unit tests for background logic exist and pass.
+    - [ ] **Implement:** Rename to `background.ts`, add types, and fix any compiler errors.
+- [ ] Task: Convert `content.js` to `.ts`
+    - [ ] **Write Tests:** Ensure content script logic is covered by tests.
+    - [ ] **Implement:** Rename to `content.ts`, add types, and fix errors.
+- [ ] Task: Convert `sidepanel.js` to `.ts`
+    - [ ] **Write Tests:** Ensure sidepanel logic is covered by unit tests.
+    - [ ] **Implement:** Rename to `sidepanel.ts`, add types, and fix errors.
+- [ ] Task: Update Build Pipeline for Extension
+    - [ ] **Implement:** Add a build step (e.g., `tsc` or `biome`) to compile TS files to JS for the browser.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Chrome Extension TypeScript Migration' (Protocol in workflow.md)
+
+## Phase 3: Accessibility and UI Audit
+- [ ] Task: Conduct Accessibility Audit
+    - [ ] **Implement:** Use the `web-accessibility` tools to audit `sidepanel.html`.
+    - [ ] **Implement:** Document all WCAG 2.2 Level AA violations.
+- [ ] Task: Fix Accessibility Violations
+    - [ ] **Implement:** Update HTML/CSS/TS in the Side Panel to resolve all identified issues (ARIs, contrast, labels, etc.).
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Accessibility and UI Audit' (Protocol in workflow.md)
+
+## Phase 4: CI/CD and Coverage Finalization
+- [ ] Task: Configure Coverage Reporting
+    - [ ] **Implement:** Setup `c8` or `v8` coverage reporting for Playwright unit tests.
+    - [ ] **Verify:** Ensure coverage meets the >80% threshold for all modules.
+- [ ] Task: Update GitHub Actions Pipeline
+    - [ ] **Implement:** Update `e2e.yml` to include Biome checks, Unit tests, and Coverage artifact uploads.
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: CI/CD and Coverage Finalization' (Protocol in workflow.md)
