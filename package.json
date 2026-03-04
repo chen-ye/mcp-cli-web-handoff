@@ -17,7 +17,8 @@
   "license": "ISC",
   "type": "commonjs",
   "workspaces": [
-    "mcp-server"
+    "mcp-server",
+    "chrome-extension"
   ],
   "devDependencies": {
     "@biomejs/biome": "2.4.5",
